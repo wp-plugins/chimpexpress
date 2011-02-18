@@ -36,5 +36,5 @@ Installing ChimpExpress is very easy. User the Wordpress plugin installer to upl
 
 == Changelog ==
 
-= 1.0 =
-* Initial release of the ChimpExpress plugin
+= 0.9 =
+* First beta release
