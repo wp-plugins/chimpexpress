@@ -32,7 +32,11 @@ Installing ChimpExpress is very easy. User the Wordpress plugin installer to upl
 
 == Screenshots ==
 
--
+1. ChimpExpress Dashboard
+2. Import your MailChimp campaigns into WordPress as blog post or landing page.
+3. Create new MailChimp campaigns and include your blog posts.
+4. Landing page archive. Review and edit your existing landing pages.
+5. ChimpExpress Settings. Enter your MailChimp API key and you're ready to go. You can enter your Google Analytics ID if you want to be able to track visitors on your landing pages.
 
 == Changelog ==
 
