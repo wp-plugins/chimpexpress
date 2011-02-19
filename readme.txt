@@ -6,15 +6,15 @@ Requires at least: 3
 Tested up to: 3.0.5
 Stable tag: trunk
 
-ChimpExpress - The MailChimp Wordpress Integration
+ChimpExpress - The MailChimp WordPress Integration
 
 == Description ==
 
-ChimpExpress is a MailChimp integration for Wordpress. It allows you to create blog posts from existing MailChimp campaigns and create new campaigns from within Wordpress by using your blog posts as campaign content.
+ChimpExpress is a MailChimp integration for WordPress. It allows you to create blog posts from existing MailChimp campaigns and create new campaigns from within WordPress by using your blog posts as campaign content.
 
 == Installation ==
 
-Installing ChimpExpress is very easy. User the Wordpress plugin installer to upload the zip file or simply follow the steps below.
+Installing ChimpExpress is very easy. User the WordPress plugin installer to upload the zip file or simply follow the steps below.
 
 1. Extract the package to obtain the `chimpexpress` folder
 2. Upload the `chimpexpress` folder to the `/wp-content/plugins/` directory
@@ -24,11 +24,11 @@ Installing ChimpExpress is very easy. User the Wordpress plugin installer to upl
 
 == Upgrade Notice ==
 
--
+
 
 == Frequently Asked Questions ==
 
--
+
 
 == Screenshots ==
 
