@@ -301,7 +301,7 @@ class chimpexpress
 		foreach ($objects as $object) {
 			if ($object != "." && $object != ".." && $object != "index.html" ) {
 				if (filetype($dir.DS.$object) == "dir") {
-					rrmdir($dir.DS.$object); 
+					$this->rrmdir($dir.DS.$object);
 				} else {
 					unlink($dir.DS.$object);
 				}
@@ -491,7 +491,7 @@ class chimpexpress
 			$objects = scandir($dir);
 			foreach ($objects as $object) {
 				if ($object != "." && $object != "..") {
-					if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+					if (filetype($dir."/".$object) == "dir") $this->rrmdir($dir."/".$object); else unlink($dir."/".$object);
 				}
 			}
 			reset($objects);

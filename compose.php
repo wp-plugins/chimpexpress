@@ -520,7 +520,6 @@ var buttons = "";
 var sections = jQuery('#sections').val();
 createSteps( '<?php echo $template;?>', sections );
 function insertContent( value ){
-	console.log(value);
 	if( value != '' ){
 		newValue = decodeURIComponent((posts[value]+'').replace(/\+/g, '%20'));
 		tinyMCE.activeEditor.setContent( tinyMCE.activeEditor.getContent() + " " + newValue );
