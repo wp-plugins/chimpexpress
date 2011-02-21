@@ -367,11 +367,13 @@ function step1(){
 		$cache->set('templates', $templates);  
 	}
 	$templateInfo = array();
-	foreach($templates['user'] as $t){
-		$templateInfo[$t['id']] = $cache->get( 'templateInfo_'.$t['id'] );
-		if ($templateInfo[$t['id']] === FALSE){  
-			$templateInfo[$t['id']] = $MCAPI->templateInfo($t['id']);
-			$cache->set('templateInfo_'.$t['id'], $templateInfo[$t['id']]);  
+	if( isset($templates['user']) ){
+		foreach($templates['user'] as $t){
+			$templateInfo[$t['id']] = $cache->get( 'templateInfo_'.$t['id'] );
+			if ($templateInfo[$t['id']] === FALSE){  
+				$templateInfo[$t['id']] = $MCAPI->templateInfo($t['id']);
+				$cache->set('templateInfo_'.$t['id'], $templateInfo[$t['id']]);  
+			}
 		}
 	}
 	
@@ -392,6 +394,11 @@ function step1(){
 			}
 		}
 		$cache->set('lists', $lists);  
+	}
+	
+	if( !$templates || !$lists ){
+		_e('Connection to MailChimp failed! Please <a href="admin.php?page=ChimpExpressCompose">click here</a> to reload this page.', 'chimpexpress');
+		exit;
 	}
 ?>
 <script type="text/javascript">jQuery(document).ready(function($) {

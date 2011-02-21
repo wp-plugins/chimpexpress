@@ -536,3 +536,7 @@ msgstr "Keine Zielseite ausgewählt!"
 msgid "Are you sure you want to cancel this operation?"
 msgstr "Sind Sie sicher, dass Sie diese Operation abbrechen möchten?"
 
+#. Text in echo
+msgid "Connection to MailChimp failed! Please <a href=\"admin.php?page=ChimpExpressCompose\">click here</a> to reload this page."
+msgstr "Verbindung zu MailChimp fehlgeschlagen! Bitte <a href=\"admin.php?page=ChimpExpressCompose\">hier klicken</a>, um die Seite neu zu laden."
+
