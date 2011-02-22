@@ -19,7 +19,7 @@
 // no direct access
 defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
-$archiveDirAbs = ABSPATH . 'archive123/';
+$archiveDirAbs = ABSPATH . 'archive/';
 $archiveDirRel = get_option('home') . '/archive/';
 
 ?>
