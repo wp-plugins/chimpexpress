@@ -631,7 +631,7 @@ function stepSubmit(){
 		} else {
 			$campaignId = '';
 		}
-		var_dump($content);
+		
 		if($campaign){
 			// create preview file
 		//	$tmpDirAbs = WP_PLUGIN_DIR . DS . 'chimpexpresstmp';
