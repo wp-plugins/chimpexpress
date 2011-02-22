@@ -19,7 +19,7 @@
 // no direct access
 defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
-$archiveDirAbs = ABSPATH . 'archive/';
+$archiveDirAbs = ABSPATH . 'archive123/';
 $archiveDirRel = get_option('home') . '/archive/';
 
 ?>
@@ -69,16 +69,18 @@ function editLP(){
 	<form action="admin.php?page=ChimpExpressEditLandingPage" method="post" id="wp_chimpexpress">
 	<?php
 	// get a list of existing archive files
-	$files = getDirectoryList( ABSPATH . 'archive/' );
-	usort( $files, 'cmp' );
+	if( is_dir( $archiveDirAbs ) ) {
+		$files = getDirectoryList( $archiveDirAbs );
+		usort( $files, 'cmp' );
+	}
 	if( isset( $files[0] ) ){
 	?>
 	<table width="100%" class="widefat">
 		<thead>
 			<tr>
-				<th width="5"></th>
+				<th width="20"></th>
 				<th><?php _e('Campaign Subject', 'chimpexpress');?></th>
-				<th width="5" nowrap="nowrap" align="center"><?php _e('created / modified', 'chimpexpress');?></th>
+				<th width="150" nowrap="nowrap" style="text-align:center;"><?php _e('created / modified', 'chimpexpress');?></th>
 			</tr>
 		</thead>
 		<tfoot>

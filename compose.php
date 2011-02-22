@@ -540,7 +540,8 @@ function insertContent( value ){
 		$editorContent = $_POST['editorContent'];
 		$content = explode('|###|',$editorContent);
 		$index = $step - 2;
-		$content = str_replace('\"','',$content[$index]);
+		$content = str_replace( array( "\'", '\"'),"'" ,$content[$index]);
+		$content = str_replace( '\\', '',$content);
 	} else {
 		$editorContent = '';
 		$content = '';
@@ -630,7 +631,7 @@ function stepSubmit(){
 		} else {
 			$campaignId = '';
 		}
-		
+		var_dump($content);
 		if($campaign){
 			// create preview file
 		//	$tmpDirAbs = WP_PLUGIN_DIR . DS . 'chimpexpresstmp';

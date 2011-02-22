@@ -346,8 +346,30 @@ class chimpexpress
 				$campaignContent = $this->MCAPI->campaignContent( $cid, false );
 				// process html contents
 				$html = $campaignContent['html'];
-				$html = preg_replace( '!<head>(.*)</head>!i', '', $html );
-				$html = str_replace( array('<html>','</html>','<body>','</body>'), '', $html );
+				preg_match('#<style type="text/css">.*</style>#is', $html, $styles);
+				$html = preg_replace( '/<!DOCTYPE[^>]*?>/is', '', $html );
+				$html = preg_replace( '!<head>(.*)</head>!is', '', $html );
+				$html = preg_replace( '!<body[^>]*>!is', '', $html);
+				$html = preg_replace( '!</body>!is', '', $html);
+				$html = str_replace( array('<html>','</html>'), '', $html );
+				
+				$style = '';
+				for($i=0;$i<count($styles);$i++){
+					$style .= $styles[$i];
+				}
+				
+				// move style declarations inline
+				require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-css_to_inline_styles.php' );
+				$CSSToInlineStyles = new CSSToInlineStyles;
+				$CSSToInlineStyles->setHTML( $html );
+				$CSSToInlineStyles->setCSS( $style );
+				$html = $CSSToInlineStyles->convert();
+				
+				$html = preg_replace( '/<!DOCTYPE[^>]*?>/is', '', $html );
+				$html = preg_replace( '!<head>(.*)</head>!is', '', $html );
+				$html = preg_replace( '!<body[^>]*>!is', '', $html);
+				$html = preg_replace( '!</body>!is', '', $html);
+				$html = str_replace( array('<html>','</html>'), '', $html );
 				
 				// remove MERGE tags
 				// anchors containing a merge tag
