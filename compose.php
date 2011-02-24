@@ -684,7 +684,8 @@ function stepSubmit(){
 			$temp = tmpfile();
 			fwrite($temp, $campaignContent['html']);
 			rewind($temp);
-			@ftp_fput($ftpstream, '/wp-content/plugins/chimpexpress/tmp/' . sanitize_title( $_POST['campaignSubject'] ) . '.html', $temp, FTP_ASCII);
+			@ftp_chdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
+			@ftp_fput($ftpstream, sanitize_title( $_POST['campaignSubject'] ) . '.html', $temp, FTP_ASCII);
 			@ftp_close($ftpstream);
 			
 			$link = $tmpDirRel . sanitize_title( $_POST['campaignSubject'] ) . '.html';
