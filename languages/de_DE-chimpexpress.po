@@ -521,8 +521,8 @@ msgid "Please select a landing page from the list!"
 msgstr "Bitte wählen Sie eine Zielseite aus der Liste!"
 
 #. Text in echo
-msgid "Landing page not found! Please make sure the directory \"archive\" exists in your wordpress root and is writable by the server."
-msgstr "Zielseite wurde nicht gefunden! Bitte stellen Sie sicher, dass das Verzeichnis \"archive\" in Ihrem Wordpress Hauptverzeichnis existiert und vom Server beschreibbar ist."
+msgid "Landing page not found! Please make sure the directory \"archive\" exists in your wordpress root and is writable by ftp."
+msgstr "Zielseite wurde nicht gefunden! Bitte stellen Sie sicher, dass das Verzeichnis \"archive\" in Ihrem Wordpress Hauptverzeichnis existiert und per FTP beschreibbar ist."
 
 #. Text in echo
 msgid "Edit Landing Page"

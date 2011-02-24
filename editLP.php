@@ -140,7 +140,7 @@ if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
 		?>
 		<div style="clear:both;"></div>
 		<br />
-		<b><?php _e('Landing page not found! Please make sure the directory "archive" exists in your wordpress root and is writable by the server.', 'chimpexpress');?></b>
+		<b><?php _e('Landing page not found! Please make sure the directory "archive" exists in your wordpress root and is writable by ftp.', 'chimpexpress');?></b>
 		<?php
 	}
 ?>
