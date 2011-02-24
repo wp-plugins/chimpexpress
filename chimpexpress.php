@@ -506,7 +506,7 @@ class chimpexpress
 			
 			$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 			$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-			@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+			@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
 			
 			// create archive directory if it doesn't exist
 			if ( ! is_dir( $archiveDirAbs ) ){
