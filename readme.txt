@@ -3,14 +3,14 @@ Contributors: freakedout
 Donate link: http://www.chimpexpress.com
 Tags: mailchimp, newsletter
 Requires at least: 3
-Tested up to: 3.0.5
+Tested up to: 3.1
 Stable tag: trunk
 
 ChimpExpress - The MailChimp WordPress Integration
 
 == Description ==
 
-ChimpExpress is a MailChimp integration for WordPress. It allows you to create blog posts from existing MailChimp campaigns and create new campaigns from within WordPress by using your blog posts as campaign content.
+ChimpExpress is a MailChimp integration for WordPress. It allows you to create blog posts from existing MailChimp campaigns and create new campaign drafts from within WordPress by using your blog posts as campaign content.
 
 == Installation ==
 

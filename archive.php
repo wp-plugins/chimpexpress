@@ -61,6 +61,22 @@ function editLP(){
 		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
 	<?php }?> 
+	<?php 
+	$chimpexpress = new chimpexpress;
+	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	if (   !$chimpexpress->_settings['ftpHost'] 
+		|| !$chimpexpress->_settings['ftpUser'] 
+		|| !$chimpexpress->_settings['ftpPasswd'] 
+		|| !$ftpstream
+		|| !$login
+	 ){ ?>
+	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
+		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please enter valid ftp credentials!', 'chimpexpress');?></a>
+	</div>
+	<?php }
+	@ftp_close($ftpstream);
+	?>
 	<div style="display:block;height:3em;"></div>
 	
 	<h3><?php _e('Landing Page Archive', 'chimpexpress');?></h3>

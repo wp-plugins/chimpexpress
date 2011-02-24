@@ -311,6 +311,26 @@ document.write=function(e){ buttons = buttons + e; jQuery("#quicktags").html(but
 		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
 	<?php }?> 
+	<?php 
+	$chimpexpress = new chimpexpress;
+	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	$ftproot = @ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+	$adminDir = @ftp_chdir($ftpstream, 'wp-admin' );
+	if (   !$chimpexpress->_settings['ftpHost'] 
+		|| !$chimpexpress->_settings['ftpUser'] 
+		|| !$chimpexpress->_settings['ftpPasswd'] 
+		|| !$ftpstream
+		|| !$login
+		|| !$ftproot
+		|| !$adminDir
+	 ){ ?>
+	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
+		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please enter valid ftp credentials!', 'chimpexpress');?></a>
+	</div>
+	<?php }
+	@ftp_close($ftpstream);
+	?>
 	<div style="display:block;height:3em;"></div>
 	
 	<h3><?php _e('Compose', 'chimpexpress');?></h3>
@@ -357,9 +377,18 @@ if($step == 1){
 function step1(){
 	
 	$MCAPI = new chimpexpressMCAPI;
+	$chimpexpress = new chimpexpress;
+	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
 	
-	$cacheDir = ABSPATH . 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache' .DS;
-	$cache = new JG_Cache( $cacheDir );  
+	$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
+	
+	if( ! is_dir( ABSPATH . $cacheDir ) ){
+		@ftp_mkdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
+	}
+	
+	$cache = new JG_Cache( $ftpstream, $cacheDir );  
 	
 	$templates = $cache->get('templates');
 	if ($templates === FALSE){
@@ -503,6 +532,7 @@ function step1(){
 </i>
 </div>
 <?php
+	@ftp_close($ftpstream);
 }
 function stepContent( $step ){
 	
@@ -639,16 +669,23 @@ function stepSubmit(){
 			$tmpDirAbs = WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'tmp';
 			$tmpDirRel = get_option('home') . '/wp-content/plugins/chimpexpress/tmp/';
 			
+			$chimpexpress = new chimpexpress;
+			$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+			$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+			@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+			
 			// remove tmp folder
 			if ( is_dir( $tmpDirAbs ) ){
-				@rrmdir( $tmpDirAbs );
+				chimpexpress::ftp_delAll( $ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
 			}
 			// create new (empty) tmp folder
-			@mkdir( $tmpDirAbs );
-			// open and write preview html file
-			$f = @fopen( $tmpDirAbs . DS . sanitize_title( $_POST['campaignSubject'] ) . '.html', 'w' );
-			@fwrite( $f, $campaignContent['html'] );
-			@fclose( $f );
+			@ftp_mkdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp');
+			// write preview file
+			$temp = tmpfile();
+			fwrite($temp, $campaignContent['html']);
+			rewind($temp);
+			@ftp_fput($ftpstream, '/wp-content/plugins/chimpexpress/tmp/' . sanitize_title( $_POST['campaignSubject'] ) . '.html', $temp, FTP_ASCII);
+			@ftp_close($ftpstream);
 			
 			$link = $tmpDirRel . sanitize_title( $_POST['campaignSubject'] ) . '.html';
 			

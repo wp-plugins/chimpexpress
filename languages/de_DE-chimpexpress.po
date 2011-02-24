@@ -540,3 +540,59 @@ msgstr "Sind Sie sicher, dass Sie diese Operation abbrechen möchten?"
 msgid "Connection to MailChimp failed! Please <a href=\"admin.php?page=ChimpExpressCompose\">click here</a> to reload this page."
 msgstr "Verbindung zu MailChimp fehlgeschlagen! Bitte <a href=\"admin.php?page=ChimpExpressCompose\">hier klicken</a>, um die Seite neu zu laden."
 
+#. Text in echo
+msgid "FTP Host"
+msgstr "FTP Host"
+
+#. Text in echo
+msgid "FTP Username"
+msgstr "FTP Benutzername"
+
+#. Text in echo
+msgid "FTP Password"
+msgstr "FTP Passwort"
+
+#. Text in echo
+msgid "FTP Path"
+msgstr "FTP Pfad"
+
+#. Text in echo
+msgid "Find FTP Path"
+msgstr "FTP Pfad ermitteln"
+
+#. Text in echo
+msgid "Invalid ftp credentials!"
+msgstr "Ungültige FTP Zugangsdaten!"
+
+#. Text in echo
+msgid "Enter the path from the ftp root directory to your WordPress installation. To find it you can login with your ftp client and navigate to the WordPress directory. This would be your ftp path."
+msgstr "Geben Sie den Pfad von Ihrem FTP Hauptverzeichnis zum WordPress Verzeichnis ein. Um diesen Pfad herauszufinden, können Sie sich mit Ihrem FTP Programm anmelden und in Ihr WordPress Verzeichnis navigieren. Dies ist der einzugebende FTP Pfad."
+
+#. Text in echo
+msgid "Please supply your ftp credentials. ChimpExpress needs them to write files on the server."
+msgstr "Bitten geben Sie die FTP Zugangsdaten für diesen Server ein. Diese werden benötigt, damit ChimpExpress Dateien auf dem Server bearbeiten kann."
+
+#. Text in echo
+msgid "Test FTP Connection"
+msgstr "FTP Verbindung testen"
+
+#. Text in echo
+msgid "run test"
+msgstr "Test ausführen"
+
+#. Text in echo
+msgid "Invalid FTP host!"
+msgstr "Ungültiger FTP Host!"
+
+#. Text in echo
+msgid "Invalid username / password!"
+msgstr "Ungültiger Benutzername / Passwort!"
+
+#. Text in echo
+msgid "FTP test successful!"
+msgstr "FTP Test erfolgreich!"
+
+#. Text in echo
+msgid "Please enter valid ftp credentials!"
+msgstr "Bitte geben Sie gültige FTP Zugangsdaten ein!"
+

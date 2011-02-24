@@ -5,8 +5,9 @@ defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
 class JG_Cache {
 
-    function __construct($dir)
+    function __construct($ftpstream, $dir)
     {
+        $this->ftpstream = $ftpstream;
         $this->dir = $dir;
     }
 
@@ -17,25 +18,25 @@ class JG_Cache {
 
     public function get($key, $expiration = 0)
     {
-        if ( !is_dir($this->dir) OR !is_writable($this->dir))
+        if ( !is_dir(ABSPATH . $this->dir) )
         {
             return FALSE;
         }
 
         $cache_path = $this->_name($key);
 
-        if (!@file_exists($cache_path))
+        if (!@file_exists(ABSPATH . $cache_path))
         {
             return FALSE;
         }
 
-        if ( $expiration > 0 && filemtime($cache_path) < (time() - $expiration) )
+        if ( $expiration > 0 && filemtime(ABSPATH . $cache_path) < (time() - $expiration) )
         {
             $this->clear($key);
             return FALSE;
         }
 
-        if (!$fp = @fopen($cache_path, 'rb'))
+        if (!$fp = @fopen(ABSPATH . $cache_path, 'rb'))
         {
             return FALSE;
         }
@@ -44,9 +45,9 @@ class JG_Cache {
 
         $cache = '';
 
-        if (filesize($cache_path) > 0)
+        if (filesize(ABSPATH . $cache_path) > 0)
         {
-            $cache = unserialize(fread($fp, filesize($cache_path)));
+            $cache = unserialize(fread($fp, filesize(ABSPATH . $cache_path)));
         }
         else
         {
@@ -62,29 +63,21 @@ class JG_Cache {
     public function set($key, $data)
     {
 
-        if ( !is_dir($this->dir) OR !is_writable($this->dir))
+        if ( !is_dir( ABSPATH . $this->dir) )
         {
             return FALSE;
         }
 
         $cache_path = $this->_name($key);
+        $temp = tmpfile();
+        fwrite($temp, serialize($data));
+        rewind($temp);
 
-        if ( ! $fp = fopen($cache_path, 'wb'))
+        if ( ! @ftp_fput($this->ftpstream, $cache_path, $temp, FTP_ASCII) )
         {
             return FALSE;
         }
 
-        if (flock($fp, LOCK_EX))
-        {
-            fwrite($fp, serialize($data));
-            flock($fp, LOCK_UN);
-        }
-        else
-        {
-            return FALSE;
-        }
-        fclose($fp);
-        @chmod($cache_path, 0777);
         return TRUE;
     }
 
@@ -92,9 +85,9 @@ class JG_Cache {
     {
         $cache_path = $this->_name($key);
 
-        if (file_exists($cache_path))
+        if (file_exists(ABSPATH . $cache_path))
         {
-            unlink($cache_path);
+            @ftp_delete($this->ftpstream, $cache_path);
             return TRUE;
         }
 
