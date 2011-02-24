@@ -516,7 +516,7 @@ class chimpexpress
 			$temp = tmpfile();
 			fwrite($temp, $html);
 			rewind($temp);
-			@ftp_fput($ftpstream, '/archive/' . $safeSubject . '.html', $temp, FTP_ASCII);
+			@ftp_fput($ftpstream, 'archive' .DS. $safeSubject . '.html', $temp, FTP_ASCII);
 			@ftp_close($ftpstream);
 			
 			$fileName = $archiveDirRel . $safeSubject . '.html';
