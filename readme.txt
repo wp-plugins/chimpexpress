@@ -11,6 +11,7 @@ ChimpExpress - The MailChimp WordPress Integration
 == Description ==
 
 ChimpExpress is a MailChimp integration for WordPress. It allows you to create blog posts from existing MailChimp campaigns and create new campaign drafts from within WordPress by using your blog posts as campaign content.
+If you're having trouble with the plugin visit our forums http://chimpexpress.com Thank you!
 
 == Installation ==
 
