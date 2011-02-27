@@ -920,7 +920,7 @@ class chimpexpress
 							<label><?php _e('FTP Path', 'chimpexpress'); ?></label>
 						</th>
 						<td>
-							<input type="text" name="<?php echo $this->_optionsName; ?>[ftpPath]" style="text-align:center;width:270px;" maxlength="36" value="<?php echo esc_attr($this->_settings['ftpPath']); ?>" id="<?php echo $this->_optionsName; ?>_ftpPath" class="regular-text code" />
+							<input type="text" name="<?php echo $this->_optionsName; ?>[ftpPath]" style="text-align:center;width:270px;" value="<?php echo esc_attr($this->_settings['ftpPath']); ?>" id="<?php echo $this->_optionsName; ?>_ftpPath" class="regular-text code" />
 							&nbsp;&nbsp;
 							<a href="javascript:ftp_find_root()"><?php _e('Find FTP Path', 'chimpexpress'); ?></a>
 							<script type="text/javascript">
