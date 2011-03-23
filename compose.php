@@ -579,7 +579,7 @@ function insertContent( value ){
 	
 	
 	joomailerEditor::the_editor($content, $id = 'content_'.rand(10000,99999), $prev_id = '', $media_buttons = true, $tab_index = 2); 
-	?>
+	?>      
 </div>
 <script type="text/javascript">switchEditors.go("<?php echo $id;?>", "tinymce");</script>
 <?php
@@ -592,7 +592,7 @@ $posts = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $wpdb->posts WHERE `p
 	$js = "var posts = new Array();\n";
 	foreach($posts as $p){
 		echo '<option value="'.$p->ID.'" title="'.esc_attr(substr( $p->post_content, 0, 150)).' ...">'.$p->post_title.'</option>';
-		$js .= "posts['".$p->ID."'] = '".esc_attr(urlencode(str_replace(array("\n"),'',$p->post_content)))."';\n";
+		$js .= "posts['".$p->ID."'] = '<h2>".esc_attr(urlencode($p->post_title))."</h2>".esc_attr(urlencode(str_replace(array("\n"),'',$p->post_content)))."';\n";
 	}	
 	?>
 	</select>

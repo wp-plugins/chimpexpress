@@ -4,7 +4,7 @@ Donate link: http://www.chimpexpress.com
 Tags: mailchimp, newsletter
 Requires at least: 3
 Tested up to: 3.1
-Stable tag: trunk
+Stable tag: 1.1
 
 ChimpExpress - The MailChimp WordPress Integration
 
@@ -43,3 +43,5 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 
 = 1.0 =
 * Initial release of the ChimpExpress plugin
+= 1.1 =
+* When inserting blog posts into campaign content, the post title is now included.
