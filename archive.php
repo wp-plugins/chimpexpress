@@ -61,6 +61,22 @@ function editLP(){
 		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
 	<?php }?> 
+	<?php 
+	$chimpexpress = new chimpexpress;
+	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	if (   !$chimpexpress->_settings['ftpHost'] 
+		|| !$chimpexpress->_settings['ftpUser'] 
+		|| !$chimpexpress->_settings['ftpPasswd'] 
+		|| !$ftpstream
+		|| !$login
+	 ){ ?>
+	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
+		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please enter valid ftp credentials!', 'chimpexpress');?></a>
+	</div>
+	<?php }
+	@ftp_close($ftpstream);
+	?>
 	<div style="display:block;height:3em;"></div>
 	
 	<h3><?php _e('Landing Page Archive', 'chimpexpress');?></h3>
@@ -69,16 +85,18 @@ function editLP(){
 	<form action="admin.php?page=ChimpExpressEditLandingPage" method="post" id="wp_chimpexpress">
 	<?php
 	// get a list of existing archive files
-	$files = getDirectoryList( ABSPATH . 'archive/' );
-	usort( $files, 'cmp' );
+	if( is_dir( $archiveDirAbs ) ) {
+		$files = getDirectoryList( $archiveDirAbs );
+		usort( $files, 'cmp' );
+	}
 	if( isset( $files[0] ) ){
 	?>
 	<table width="100%" class="widefat">
 		<thead>
 			<tr>
-				<th width="5"></th>
+				<th width="20"></th>
 				<th><?php _e('Campaign Subject', 'chimpexpress');?></th>
-				<th width="5" nowrap="nowrap" align="center"><?php _e('created / modified', 'chimpexpress');?></th>
+				<th width="150" nowrap="nowrap" style="text-align:center;"><?php _e('created / modified', 'chimpexpress');?></th>
 			</tr>
 		</thead>
 		<tfoot>
