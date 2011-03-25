@@ -42,7 +42,7 @@ class chimpexpress
 	
 	private $_optionsName = 'chimpexpress';
 	private $_optionsGroup = 'chimpexpress-options';
-	private $_url = "https://us1.api.mailchimp.com/1.2/";
+	private $_url = "https://us1.api.mailchimp.com/1.3/";
 	private $_listener_query_var = 'chimpexpressListener';
 	private $_timeout = 30;
 	

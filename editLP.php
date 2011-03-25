@@ -23,11 +23,17 @@ if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
 	
 	$content = $_POST['head'] . $_POST['LPcontent'] . '</body></html>';
 	$content = str_replace( array('\"', "\'"), array('"', "'"), $content);
-	
-	$archiveDirAbs = ABSPATH . 'archive/';
-	$f = @fopen( $archiveDirAbs . $_POST['lpid'], 'w' );
-	@fwrite( $f, $content );
-	@fclose( $f );
+
+	// write landing page html file
+	$chimpexpress = new chimpexpress;
+	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	$ftproot = @ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+	$temp = tmpfile();
+	fwrite($temp, $content);
+	rewind($temp);
+	@ftp_fput($ftpstream, 'archive' .DS. $_POST['lpid'], $temp, FTP_ASCII);
+	@ftp_close($ftpstream);
 	
 	echo '<script type="text/javascript">window.location = "'.get_option('home') . '/wp-admin/admin.php?page=ChimpExpressArchive";</script>';
 	
