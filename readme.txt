@@ -4,7 +4,7 @@ Donate link: http://www.chimpexpress.com
 Tags: mailchimp, newsletter
 Requires at least: 3
 Tested up to: 3.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 ChimpExpress - The MailChimp WordPress Integration
 
