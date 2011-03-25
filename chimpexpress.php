@@ -3,7 +3,7 @@
  * Plugin Name: ChimpExpress
  * Plugin URI: http://www.chimpexpress.com
  * Description: Wordpress MailChimp Integration - Create MailChimp campaign drafts from within Wordpress and include blog posts or import recent campaigns into Wordpress to create blog posts or landing pages. Requires PHP5. If you're having trouble with the plugin visit our forums http://www.chimpexpress.com/support.html Thank you!
- * Version: 1.1
+ * Version: 1.2
  * Author: freakedout
  * Author URI: http://www.freakedout.de
  * License: GNU/GPL 2
@@ -42,7 +42,7 @@ class chimpexpress
 	
 	private $_optionsName = 'chimpexpress';
 	private $_optionsGroup = 'chimpexpress-options';
-	private $_url = "https://us1.api.mailchimp.com/1.2/";
+	private $_url = "https://us1.api.mailchimp.com/1.3/";
 	private $_listener_query_var = 'chimpexpressListener';
 	private $_timeout = 30;
 	
@@ -74,7 +74,7 @@ class chimpexpress
 		}
 		// Put the datacenter and version into the url
 		$this->_url = "https://{$datacenter}.api.mailchimp.com/{$this->_settings['version']}/";
-		
+
 		require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-JG_Cache.php' );
 		
 		/**
@@ -180,14 +180,15 @@ class chimpexpress
 		// clear cache if present
 		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-		@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
-		$cacheDir = ABSPATH . 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache' .DS;
-		if( is_dir( $cacheDir ) ){
-			$cache = new JG_Cache( $ftpstream, $cacheDir );
-			$templates = $cache->get('templates');
-			if ( $templates ){ 
-				$this->compose_clear_cache_callback();
-			}
+		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
+		
+		$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
+		if( is_dir( ABSPATH . $cacheDir ) ){
+		    $cache = new JG_Cache( $ftpstream, $cacheDir );
+		    $templates = $cache->get('templates');
+		    if ( $templates ){
+			$this->compose_clear_cache_callback();
+		    }
 		}
 		@ftp_close($ftpstream);
 
@@ -221,7 +222,7 @@ class chimpexpress
 			'password'				=> '',
 			'apikey'				=> '',
 			'debugging'				=> 'off',
-			'debugging_email'		=> '',
+			'debugging_email'			=> '',
 			'listener_security_key'	=> $this->_generateSecurityKey(),
 			'version'				=> '1.3',
 			'GAprofile'				=> '',
@@ -311,7 +312,7 @@ class chimpexpress
 	function compose_clear_cache_callback(){
 		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-		@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
 		
 		$dir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
 		$this->ftp_delAll($ftpstream,  $dir);
@@ -332,7 +333,7 @@ class chimpexpress
 		if ( is_dir( WP_PLUGIN_DIR . DS . 'chimpexpress' .DS. 'tmp' ) ){
 			$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 			$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-			@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+			@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
 			$this->ftp_delAll($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
 			@ftp_close($ftpstream);
 		}
@@ -477,15 +478,15 @@ class chimpexpress
 			// insert google analytics
 			if( $this->_settings['GAprofile'] ){
 				$script = "\n<script type=\"text/javascript\">\n".
-							"var _gaq = _gaq || [];\n".
-							"_gaq.push(['_setAccount', '".$this->_settings['GAprofile']."']);\n".
-							"_gaq.push(['_trackPageview']);\n".
-							"(function() {\n".
-							"var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n".
-							"ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n".
-							"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n".
-							"})();\n".
-							"</script>";
+					"var _gaq = _gaq || [];\n".
+					"_gaq.push(['_setAccount', '".$this->_settings['GAprofile']."']);\n".
+					"_gaq.push(['_trackPageview']);\n".
+					"(function() {\n".
+					"var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n".
+					"ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n".
+					"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n".
+					"})();\n".
+					"</script>";
 				$html = str_replace( '</head>', $script."\n</head>", $html );
 			}
 			
@@ -555,7 +556,6 @@ class chimpexpress
 				}
 			}
 			sleep(1);
-			ob_flush() ;
 		}
 		$flag = @ftp_rmdir($ftpstream, $dst_dir); // delete empty directories
 
@@ -617,7 +617,7 @@ class chimpexpress
 		
 		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-		@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
 		$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
 		if( ! is_dir( ABSPATH . $cacheDir ) ){
 			@ftp_mkdir($ftpstream, $cacheDir);
@@ -950,7 +950,7 @@ class chimpexpress
 						<td>
 							<a href="javascript:testFtp()" style="float:left; margin-right: 20px;"><?php _e('run test', 'chimpexpress'); ?></a>
 							<div id="ajaxLoader" style="display:none;float: left;padding-top: 5px;width: 30px;">
-								<img src="<?php echo plugins_url( '/images/ajax-loader.gif', __FILE__ );?>" />
+								<img src="<?php echo plugins_url( '/images/ajax-loader.gif', __FILE__ );?>" alt="" />
 							</div>
 							<div id="ftpResponse" style="float:left;"></div>
 							<div style="clear:both;"></div>

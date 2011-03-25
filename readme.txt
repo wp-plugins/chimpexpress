@@ -45,3 +45,6 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 * Initial release of the ChimpExpress plugin
 = 1.1 =
 * When inserting blog posts into campaign content, the post title is now included.
+= 1.2 =
+* php.js library updated to v3.24
+* Bugfix: writing files via ftp failed in some cases
