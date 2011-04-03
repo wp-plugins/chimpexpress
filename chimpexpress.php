@@ -3,7 +3,7 @@
  * Plugin Name: ChimpExpress
  * Plugin URI: http://www.chimpexpress.com
  * Description: Wordpress MailChimp Integration - Create MailChimp campaign drafts from within Wordpress and include blog posts or import recent campaigns into Wordpress to create blog posts or landing pages. Requires PHP5. If you're having trouble with the plugin visit our forums http://www.chimpexpress.com/support.html Thank you!
- * Version: 1.2
+ * Version: 1.3
  * Author: freakedout
  * Author URI: http://www.freakedout.de
  * License: GNU/GPL 2
@@ -74,9 +74,16 @@ class chimpexpress
 		}
 		// Put the datacenter and version into the url
 		$this->_url = "https://{$datacenter}.api.mailchimp.com/{$this->_settings['version']}/";
-
+		// include cache library
 		require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-JG_Cache.php' );
-		
+		// include WP filesystem
+
+		if ( ! function_exists( 'WP_Filesystem' ) ){
+		    require( ABSPATH .DS. 'wp-admin' .DS. 'includes' .DS. 'file.php' );
+		    WP_Filesystem();
+		}
+		global $wp_filesystem;
+
 		/**
 		 * Add filters and actions
 		 */
@@ -100,6 +107,8 @@ class chimpexpress
 		add_action('wp_ajax_compose_removeDraft', array($this,'compose_removeDraft_callback'));
 		// import ajax callbacks
 		add_action('wp_ajax_import', array($this,'import_callback'));
+		// archive ajax callbacks
+		add_action('wp_ajax_archive_deleteLP', array($this,'archive_deleteLP_callback'));
 		
 		add_action('wp_ajax_ftp_find_root', array($this,'ftp_find_root'));
 		add_action('wp_ajax_ftp_test', array($this,'ftp_test_callback'));
@@ -178,19 +187,14 @@ class chimpexpress
 		*/
 		
 		// clear cache if present
-		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
-		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
-		
 		$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
 		if( is_dir( ABSPATH . $cacheDir ) ){
-		    $cache = new JG_Cache( $ftpstream, $cacheDir );
+		    $cache = new JG_Cache( $cacheDir );
 		    $templates = $cache->get('templates');
 		    if ( $templates ){
 			$this->compose_clear_cache_callback();
 		    }
 		}
-		@ftp_close($ftpstream);
 
 		return $newvalue;
 	}
@@ -221,6 +225,7 @@ class chimpexpress
 			'username'				=> '',
 			'password'				=> '',
 			'apikey'				=> '',
+			'CEaccess'				=> 'manage_options',
 			'debugging'				=> 'off',
 			'debugging_email'			=> '',
 			'listener_security_key'	=> $this->_generateSecurityKey(),
@@ -251,7 +256,7 @@ class chimpexpress
 		add_menu_page(
 			__('Dashboard', 'chimpexpress'),
 			'ChimpExpress', 
-			'manage_options',
+			$this->_settings['CEaccess'],
 			'ChimpExpressDashboard', 
 			array($this, 'main'),
 			plugins_url( 'images' . DS . 'logo_16.png', __FILE__ ),
@@ -261,7 +266,7 @@ class chimpexpress
 			'ChimpExpressDashboard',
 			__('Import', 'chimpexpress'),
 			__('Import', 'chimpexpress'), 
-			'manage_options',
+			$this->_settings['CEaccess'],
 			'ChimpExpressImport', 
 			array($this, 'import'),
 			'',
@@ -271,7 +276,7 @@ class chimpexpress
 			'ChimpExpressDashboard',
 			__('Compose', 'chimpexpress'),
 			__('Compose', 'chimpexpress'), 
-			'manage_options',
+			$this->_settings['CEaccess'],
 			'ChimpExpressCompose', 
 			array($this, 'compose'),
 			'',
@@ -281,7 +286,7 @@ class chimpexpress
 			'ChimpExpressDashboard',
 			__('Landing Page Archive', 'chimpexpress'),
 			__('Landing Pages', 'chimpexpress'), 
-			'manage_options',
+			$this->_settings['CEaccess'],
 			'ChimpExpressArchive', 
 			array($this, 'archive'),
 			'',
@@ -292,7 +297,7 @@ class chimpexpress
 			'ChimpExpressArchive',
 			__('Edit Landing Page', 'chimpexpress'),
 			__('Edit Landing Page', 'chimpexpress'), 
-			'manage_options',
+			$this->_settings['CEaccess'],
 			'ChimpExpressEditLandingPage', 
 			array($this, 'editLP'),
 			'',
@@ -310,14 +315,20 @@ class chimpexpress
 
 
 	function compose_clear_cache_callback(){
+
+	    global $wp_filesystem;
+	    if( $wp_filesystem->method == 'direct' ){
+		$wp_filesystem->delete( ABSPATH . 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache', true);
+	    } else {
 		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
 		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
-		
+
 		$dir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
 		$this->ftp_delAll($ftpstream,  $dir);
 		
 		@ftp_close($ftpstream);
+	    }
 		return;
 	}
 	
@@ -331,11 +342,16 @@ class chimpexpress
 		$this->MCAPI->campaignDelete($cid);
 		
 		if ( is_dir( WP_PLUGIN_DIR . DS . 'chimpexpress' .DS. 'tmp' ) ){
+		    global $wp_filesystem;
+		    if( $wp_filesystem->method == 'direct' ){
+			$wp_filesystem->delete( WP_PLUGIN_DIR . DS . 'chimpexpress' .DS. 'tmp', true);
+		    } else {
 			$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
 			$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
 			@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
 			$this->ftp_delAll($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
 			@ftp_close($ftpstream);
+		    }
 		}
 		die;
 	}
@@ -504,21 +520,30 @@ class chimpexpress
 			$archiveDirRel = get_option('home') . '/archive/';
 			$safeSubject = sanitize_title( $fileName );
 		//	$this->rrmdir($archiveDirAbs);
+
 			
-			$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
-			$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-			@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
-			
-			// create archive directory if it doesn't exist
-			if ( ! is_dir( $archiveDirAbs ) ){
-				@ftp_mkdir($ftpstream, 'archive');
+			global $wp_filesystem;
+			if( $wp_filesystem->method == 'direct' ){
+			    if ( ! is_dir( $archiveDirAbs ) ){
+				    $wp_filesystem->mkdir( ABSPATH . 'archive');
+			    }
+			    $wp_filesystem->put_contents( ABSPATH . 'archive' .DS. $safeSubject . '.html', $html );
+			} else {
+			    $ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
+			    $login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
+			    @ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
+
+			    // create archive directory if it doesn't exist
+			    if ( ! is_dir( $archiveDirAbs ) ){
+				    @ftp_mkdir($ftpstream, 'archive');
+			    }
+			    // write landing page html file
+			    $temp = tmpfile();
+			    fwrite($temp, $html);
+			    rewind($temp);
+			    @ftp_fput($ftpstream, 'archive' .DS. $safeSubject . '.html', $temp, FTP_ASCII);
+			    @ftp_close($ftpstream);
 			}
-			// write landing page html file
-			$temp = tmpfile();
-			fwrite($temp, $html);
-			rewind($temp);
-			@ftp_fput($ftpstream, 'archive' .DS. $safeSubject . '.html', $temp, FTP_ASCII);
-			@ftp_close($ftpstream);
 			
 			$fileName = $archiveDirRel . $safeSubject . '.html';
 			echo $fileName;
@@ -527,6 +552,27 @@ class chimpexpress
 		
 		echo $next_increment;
 		die;
+	}
+
+	function archive_deleteLP_callback(){
+	    global $wp_filesystem;
+	    if( $wp_filesystem->method != 'direct' ){
+		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
+		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
+		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
+	    }
+	    $filenames  = $_POST['filenames'];
+	    foreach( $filenames as $name ){
+		if( $wp_filesystem->method == 'direct' ){
+		    $wp_filesystem->delete( ABSPATH . 'archive' .DS. $name );
+		} else {	    
+		    $this->ftp_delAll( $ftpstream, 'archive' .DS. $name );
+		}
+	    }
+	    if( $wp_filesystem->method != 'direct' ){
+		@ftp_close($ftpstream);
+	    }
+	    return;
 	}
 	
 	function rrmdir($dir) {
@@ -543,7 +589,7 @@ class chimpexpress
 	}
 	
 	function ftp_delAll($ftpstream, $dst_dir){
-		$ar_files = ftp_nlist($ftpstream, $dst_dir);
+		$ar_files = @ftp_nlist($ftpstream, $dst_dir);
 		
 		if (is_array($ar_files)){ // makes sure there are files
 			for ($i=0;$i<sizeof($ar_files);$i++){ // for each file
@@ -610,26 +656,40 @@ class chimpexpress
 	}
 
 	public function main(){
-		require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'main.php' );
+	    require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'main.php' );
 	}
 	function compose(){
-		echo '<div class="wrap">';
-		
-		$ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
-		$login = @ftp_login($ftpstream, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
-		@ftp_chdir($ftpstream, $this->_settings['ftpPath'] );
+		global $wp_filesystem;
+		$handler = $wp_filesystem;
 		$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
-		if( ! is_dir( ABSPATH . $cacheDir ) ){
-			@ftp_mkdir($ftpstream, $cacheDir);
+		echo '<div class="wrap">';
+		if ( ! is_dir( ABSPATH . $cacheDir ) ){
+		    if( $wp_filesystem->method == 'direct' ){
+			$wp_filesystem->mkdir( ABSPATH . $cacheDir);
+		    } else {
+			$handler = @ftp_connect( $this->_settings['ftpHost'] );
+			$login = @ftp_login($handler, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
+			@ftp_chdir($handler, $this->_settings['ftpPath'] );
+			@ftp_mkdir($handler, $cacheDir);
+		    }
+		} else {
+		    if( $wp_filesystem->method != 'direct' ){
+			$handler = @ftp_connect( $this->_settings['ftpHost'] );
+			$login = @ftp_login($handler, $this->_settings['ftpUser'], $this->_settings['ftpPasswd']);
+			@ftp_chdir($handler, $this->_settings['ftpPath'] );
+		    }
 		}
-		$cache = new JG_Cache( $ftpstream, $cacheDir );
+
+		$useFTP = ($wp_filesystem->method == 'direct') ? false : true;
+		$cache = new JG_Cache( $cacheDir, $useFTP, $handler );
+		
 		$templates = $cache->get('templates');
 		if ($templates === FALSE){
 			echo '<div id="preloaderContainer"><div id="preloader">'.__('Retrieving templates and lists ...', 'chimpexpress').'</div></div>';
 		}
 		require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'compose.php' );
 		echo '</div>';
-		@ftp_close($ftpstream);
+		@ftp_close($handler);
 	}
 	function import(){
 		require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'import.php' );
@@ -874,7 +934,34 @@ class chimpexpress
 							</div>
 						</td>
 					</tr>
-					
+
+					<tr>
+					    <td></td>
+					    <td></td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row">
+							<label><?php _e('Grant Access for', 'chimpexpress') ?></label>
+						</th>
+						<td>
+						    <select name="<?php echo $this->_optionsName; ?>[CEaccess]">
+							<option value="manage_options" <?php echo ($this->_settings['CEaccess']=='manage_options')?'selected="selected"':'';?>><?php _e('Administrators', 'chimpexpress');?></option>
+							<option value="publish_pages" <?php echo ($this->_settings['CEaccess']=='publish_pages')?'selected="selected"':'';?>><?php _e('Editors', 'chimpexpress');?></option>
+							<option value="publish_posts" <?php echo ($this->_settings['CEaccess']=='publish_posts')?'selected="selected"':'';?>><?php _e('Authors', 'chimpexpress');?></option>
+						    </select>
+						    <a class="chimpexpress_help" title="<?php _e('Click for Help!', 'chimpexpress'); ?>" href="#" onclick="jQuery('#mc_access').toggle(); return false;">
+								<?php _e('[?]', 'chimpexpress'); ?></a>
+						    <div style="display:inline-block;">
+							    <span id="mc_access" style="display:none;"><?php _e("Select the role, which is supposed to have access to the plugin. All roles above the selected will have access as well.", 'chimpexpress'); ?></span>
+						    </div>
+						</td>
+					</tr>
+
+					<tr>
+					    <td></td>
+					    <td></td>
+					</tr>
 					
 					<tr valign="top">
 						<th scope="row">
@@ -885,7 +972,7 @@ class chimpexpress
 							<a class="chimpexpress_help" title="<?php _e('Click for Help!', 'chimpexpress'); ?>" href="#" onclick="jQuery('#ftpHost').toggle(); return false;">
 								<?php _e('[?]', 'chimpexpress'); ?></a>
 							<div style="display:inline-block;">
-								<span id="ftpHost" style="display:none;"><?php _e("Please supply your ftp credentials. ChimpExpress needs them to write files on the server.", 'chimpexpress'); ?></span>
+								<span id="ftpHost" style="display:none;"><?php _e("If ChimpExpress can't write files directly to the server it will prompt you to enter your ftp credentials.", 'chimpexpress'); ?></span>
 							</div>
 						</td>
 					</tr>
@@ -898,7 +985,7 @@ class chimpexpress
 							<a class="chimpexpress_help" title="<?php _e('Click for Help!', 'chimpexpress'); ?>" href="#" onclick="jQuery('#ftpUser').toggle(); return false;">
 								<?php _e('[?]', 'chimpexpress'); ?></a>
 							<div style="display:inline-block;">
-								<span id="ftpUser" style="display:none;"><?php _e("Please supply your ftp credentials. ChimpExpress needs them to write files on the server.", 'chimpexpress'); ?></span>
+								<span id="ftpUser" style="display:none;"><?php _e("If ChimpExpress can't write files directly to the server it will prompt you to enter your ftp credentials.", 'chimpexpress'); ?></span>
 							</div>
 						</td>
 					</tr>
@@ -911,7 +998,7 @@ class chimpexpress
 							<a class="chimpexpress_help" title="<?php _e('Click for Help!', 'chimpexpress'); ?>" href="#" onclick="jQuery('#ftpPasswd').toggle(); return false;">
 								<?php _e('[?]', 'chimpexpress'); ?></a>
 							<div style="display:inline-block;">
-								<span id="ftpPasswd" style="display:none;"><?php _e("Please supply your ftp credentials. ChimpExpress needs them to write files on the server.", 'chimpexpress'); ?></span>
+								<span id="ftpPasswd" style="display:none;"><?php _e("If ChimpExpress can't write files directly to the server it will prompt you to enter your ftp credentials.", 'chimpexpress'); ?></span>
 							</div>
 						</td>
 					</tr>

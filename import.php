@@ -41,26 +41,32 @@ if ( isset($_POST['type']) ) {
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
 		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
-	<?php }?> 
-	<?php 
+	<?php }?>
+	<?php
+	global $wp_filesystem;
+	if( $wp_filesystem->method != 'direct' ){
 	$chimpexpress = new chimpexpress;
 	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
 	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
 	$ftproot = @ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
 	$adminDir = @ftp_chdir($ftpstream, 'wp-admin' );
-	if (   !$chimpexpress->_settings['ftpHost'] 
-		|| !$chimpexpress->_settings['ftpUser'] 
-		|| !$chimpexpress->_settings['ftpPasswd'] 
+	if (   $wp_filesystem->method != 'direct'
+		&& (
+		!$chimpexpress->_settings['ftpHost']
+		|| !$chimpexpress->_settings['ftpUser']
+		|| !$chimpexpress->_settings['ftpPasswd']
 		|| !$ftpstream
 		|| !$login
 		|| !$ftproot
 		|| !$adminDir
+		)
 	 ){ ?>
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
-		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please enter valid ftp credentials!', 'chimpexpress');?></a>
+		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Direct file access not possible. Please enter valid ftp credentials in the configuration!', 'chimpexpress');?></a>
 	</div>
 	<?php }
 	@ftp_close($ftpstream);
+	}
 	?>
 	<div style="display:block;height:3em;"></div>
 	

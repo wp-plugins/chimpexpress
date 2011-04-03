@@ -6,7 +6,7 @@ msgstr ""
 "Last-Translator: Pete <pete@freakedout.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Text in echo
@@ -517,12 +517,24 @@ msgid "Cancel"
 msgstr "Abbrechen"
 
 #. Text in echo
+msgid "Delete"
+msgstr "Löschen"
+
+#. Text in echo
 msgid "Please select a landing page from the list!"
 msgstr "Bitte wählen Sie eine Zielseite aus der Liste!"
 
 #. Text in echo
-msgid "Landing page not found! Please make sure the directory \"archive\" exists in your wordpress root and is writable by ftp."
-msgstr "Zielseite wurde nicht gefunden! Bitte stellen Sie sicher, dass das Verzeichnis \"archive\" in Ihrem Wordpress Hauptverzeichnis existiert und per FTP beschreibbar ist."
+msgid "Please select one or more landing pages from the list!"
+msgstr "Bitte wählen Sie eine oder mehrere Zielseiten aus der Liste!"
+
+#. Text in echo
+msgid "Are you sure you want to delete the selected landing pages? There is no undo!"
+msgstr "Sind Sie sicher, dass Sie die gewählten Zielseiten löschen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden!"
+
+#. Text in echo
+msgid "Landing page not found! Please make sure the directory \"archive\" exists in your wordpress root and is writable."
+msgstr "Zielseite wurde nicht gefunden! Bitte stellen Sie sicher, dass das Verzeichnis \"archive\" in Ihrem Wordpress Hauptverzeichnis existiert und beschreibbar ist."
 
 #. Text in echo
 msgid "Edit Landing Page"
@@ -569,8 +581,8 @@ msgid "Enter the path from the ftp root directory to your WordPress installation
 msgstr "Geben Sie den Pfad von Ihrem FTP Hauptverzeichnis zum WordPress Verzeichnis ein. Um diesen Pfad herauszufinden, können Sie sich mit Ihrem FTP Programm anmelden und in Ihr WordPress Verzeichnis navigieren. Dies ist der einzugebende FTP Pfad."
 
 #. Text in echo
-msgid "Please supply your ftp credentials. ChimpExpress needs them to write files on the server."
-msgstr "Bitten geben Sie die FTP Zugangsdaten für diesen Server ein. Diese werden benötigt, damit ChimpExpress Dateien auf dem Server bearbeiten kann."
+msgid "If ChimpExpress can't write files directly to the server it will prompt you to enter your ftp credentials."
+msgstr "Falls ChimpExpress nicht direkt Dateien auf den Server übertragen kann, werden Sie aufgefordert hier Ihre FTP Zugangsdaten einzugeben."
 
 #. Text in echo
 msgid "Test FTP Connection"
@@ -593,6 +605,26 @@ msgid "FTP test successful!"
 msgstr "FTP Test erfolgreich!"
 
 #. Text in echo
-msgid "Please enter valid ftp credentials!"
-msgstr "Bitte geben Sie gültige FTP Zugangsdaten ein!"
+msgid "Direct file access not possible. Please enter valid ftp credentials in the configuration!"
+msgstr "Kein direkter Datezugriff möglich. Bitte geben Sie gültige FTP Zugangsdaten  in der Konfiguration ein!"
+
+#. Text in echo
+msgid "Grant Access for"
+msgstr "Zugriff gestatten für"
+
+#. Text in echo
+msgid "Select the role, which is supposed to have access to the plugin. All roles above the selected will have access as well."
+msgstr "Wählen Sie die Benutzergruppe, die Zugriff auf das Plugin haben soll. Alle Gruppen oberhalb der gewählten werden ebenfalls Zugriff erhalten."
+
+#. Text in echo
+msgid "Administrators"
+msgstr "Administratoren"
+
+#. Text in echo
+msgid "Editors"
+msgstr "Redakteure"
+
+#. Text in echo
+msgid "Authors"
+msgstr "Autoren"
 

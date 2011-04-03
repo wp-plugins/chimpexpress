@@ -25,7 +25,11 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 
 == Upgrade Notice ==
 
-
+* If you are upgrading from version 1.2 or previous please either set the owner for the following folders to the server or delete the folders via ftp after the upgrade:
+* * /wp-content/plugins/chimpexpress/cache
+* * /wp-content/plugins/chimpexpress/tmp
+* * /archive   <= if you created landing pages do not delete this folder! Set the owner of this folder to the server instead (CHOWN).
+* If you need help please visit our forums at http://chimpexpress.com !
 
 == Frequently Asked Questions ==
 
@@ -37,7 +41,7 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 2. Import your MailChimp campaigns into WordPress as blog post or landing page.
 3. Create new MailChimp campaigns and include your blog posts.
 4. Landing page archive. Review and edit your existing landing pages.
-5. ChimpExpress Settings. Enter your MailChimp API key, your ftp credentials and you're ready to go. You can enter your Google Analytics ID if you want to be able to track visitors on your landing pages.
+5. ChimpExpress Settings. Enter your MailChimp API key and you're ready to go. If your write permissions allow the plugin to write files directly to the server you don't need to enter ftp credentials. Otherwise you will be prompted to supply the credentials. You can enter your Google Analytics ID if you want to be able to track visitors on your landing pages.
 
 == Changelog ==
 
@@ -48,3 +52,8 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 = 1.2 =
 * php.js library updated to v3.24
 * Bugfix: writing files via ftp failed in some cases
+= 1.3 =
+* FTP credentials are no longer mandatory! If the plugin is able to write files directly you don't need to enter ftp credentials anymore.
+* Landing page archive - creation date now takes timezone offset from WordPress configuration into account.
+* Landing page archive - delete function added.
+* Updated German translations.

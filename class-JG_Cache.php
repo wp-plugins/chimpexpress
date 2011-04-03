@@ -5,10 +5,12 @@ defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
 class JG_Cache {
 
-    function __construct($ftpstream, $dir)
+    function __construct($dir, $useFTP = false, $handler = NULL)
     {
-        $this->ftpstream = $ftpstream;
         $this->dir = $dir;
+	$this->useFTP = $useFTP;
+	$this->handler = $handler;
+        
     }
 
     private function _name($key)
@@ -62,21 +64,33 @@ class JG_Cache {
 
     public function set($key, $data)
     {
-
         if ( !is_dir( ABSPATH . $this->dir) )
         {
             return FALSE;
         }
 
         $cache_path = $this->_name($key);
-        $temp = tmpfile();
-        fwrite($temp, serialize($data));
-        rewind($temp);
 
-        if ( ! @ftp_fput($this->ftpstream, $cache_path, $temp, FTP_ASCII) )
-        {
-            return FALSE;
-        }
+	if( $this->useFTP ) {
+	    $temp = tmpfile();
+	    fwrite($temp, serialize($data));
+	    rewind($temp);
+	    if ( ! @ftp_fput($this->handler, $cache_path, $temp, FTP_ASCII) )
+	    {
+		return FALSE;
+	    }
+	} else {
+	    
+	    if ( !$this->handler->is_writable( ABSPATH . $this->dir ) )
+	    {
+		return FALSE;
+	    }
+
+	    if ( ! $this->handler->put_contents( ABSPATH . $cache_path, serialize($data) ) )
+	    {
+		return FALSE;
+	    }
+	}
 
         return TRUE;
     }
@@ -87,7 +101,11 @@ class JG_Cache {
 
         if (file_exists(ABSPATH . $cache_path))
         {
-            @ftp_delete($this->ftpstream, $cache_path);
+            if( $this->useFTP ){
+		@ftp_delete($this->handler, $cache_path);
+	    } else {
+		$this->handler->delete( $cache_path );
+	    }
             return TRUE;
         }
 

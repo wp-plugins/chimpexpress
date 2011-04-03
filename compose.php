@@ -310,26 +310,32 @@ document.write=function(e){ buttons = buttons + e; jQuery("#quicktags").html(but
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
 		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
-	<?php }?> 
-	<?php 
+	<?php }?>
+	<?php
+	global $wp_filesystem;
+	if( $wp_filesystem->method != 'direct' ){
 	$chimpexpress = new chimpexpress;
 	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
 	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
 	$ftproot = @ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
 	$adminDir = @ftp_chdir($ftpstream, 'wp-admin' );
-	if (   !$chimpexpress->_settings['ftpHost'] 
-		|| !$chimpexpress->_settings['ftpUser'] 
-		|| !$chimpexpress->_settings['ftpPasswd'] 
+	if (   $wp_filesystem->method != 'direct'
+		&& (
+		!$chimpexpress->_settings['ftpHost']
+		|| !$chimpexpress->_settings['ftpUser']
+		|| !$chimpexpress->_settings['ftpPasswd']
 		|| !$ftpstream
 		|| !$login
 		|| !$ftproot
 		|| !$adminDir
+		)
 	 ){ ?>
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
-		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please enter valid ftp credentials!', 'chimpexpress');?></a>
+		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Direct file access not possible. Please enter valid ftp credentials in the configuration!', 'chimpexpress');?></a>
 	</div>
 	<?php }
 	@ftp_close($ftpstream);
+	}
 	?>
 	<div style="display:block;height:3em;"></div>
 	
@@ -375,20 +381,28 @@ if($step == 1){
 }
 
 function step1(){
-	
+	global $wp_filesystem;
 	$MCAPI = new chimpexpressMCAPI;
-	$chimpexpress = new chimpexpress;
-	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
-	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
-	@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
-	
 	$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
-	
-	if( ! is_dir( ABSPATH . $cacheDir ) ){
-		@ftp_mkdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
+
+	if( $wp_filesystem->method == 'direct' ){
+	    $useFTP = false;
+	    $handler = $wp_filesystem;
+	    if( ! is_dir( ABSPATH . $cacheDir ) ){
+		$wp_filesystem->mkdir( ABSPATH . $cacheDir);
+	    }
+	} else {
+	    $useFTP = true;
+	    $chimpexpress = new chimpexpress;
+	    $handler = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	    $login = @ftp_login($handler, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	    @ftp_chdir($handler, $chimpexpress->_settings['ftpPath'] );
+	    if( ! is_dir( ABSPATH . $cacheDir ) ){
+		@ftp_mkdir($handler, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
+	    }
 	}
 	
-	$cache = new JG_Cache( $ftpstream, $cacheDir );  
+	$cache = new JG_Cache( $cacheDir, $useFTP, $handler );
 	
 	$templates = $cache->get('templates');
 	if ($templates === FALSE){
@@ -664,29 +678,39 @@ function stepSubmit(){
 		
 		if($campaign){
 			// create preview file
-		//	$tmpDirAbs = WP_PLUGIN_DIR . DS . 'chimpexpresstmp';
-		//	$tmpDirRel = plugins_url( 'tmp/', __FILE__ );
+			global $wp_filesystem;
 			$tmpDirAbs = WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'tmp';
 			$tmpDirRel = get_option('home') . '/wp-content/plugins/chimpexpress/tmp/';
-			
-			$chimpexpress = new chimpexpress;
-			$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
-			$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
-			@ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
-			
-			// remove tmp folder
-			if ( is_dir( $tmpDirAbs ) ){
-				chimpexpress::ftp_delAll( $ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
+
+			if( $wp_filesystem->method == 'direct' ){
+			    // remove tmp folder
+			    if ( is_dir( $tmpDirAbs ) ){
+				$wp_filesystem->delete( $tmpDirAbs, true);
+			    }
+			    // create new (empty) tmp folder
+			    $wp_filesystem->mkdir( $tmpDirAbs );
+			    // write preview file
+			    $wp_filesystem->put_contents( $tmpDirAbs .DS. sanitize_title( $_POST['campaignSubject'] ) . '.html', $campaignContent['html'] );
+			} else {
+			    $chimpexpress = new chimpexpress;
+			    $ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+			    $login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+			    @ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+
+			    // remove tmp folder
+			    if ( is_dir( $tmpDirAbs ) ){
+				    chimpexpress::ftp_delAll( $ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
+			    }
+			    // create new (empty) tmp folder
+			    @ftp_mkdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp');
+			    // write preview file
+			    $temp = tmpfile();
+			    fwrite($temp, $campaignContent['html']);
+			    rewind($temp);
+			    @ftp_chdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
+			    @ftp_fput($ftpstream, sanitize_title( $_POST['campaignSubject'] ) . '.html', $temp, FTP_ASCII);
+			    @ftp_close($ftpstream);
 			}
-			// create new (empty) tmp folder
-			@ftp_mkdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp');
-			// write preview file
-			$temp = tmpfile();
-			fwrite($temp, $campaignContent['html']);
-			rewind($temp);
-			@ftp_chdir($ftpstream, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'tmp' );
-			@ftp_fput($ftpstream, sanitize_title( $_POST['campaignSubject'] ) . '.html', $temp, FTP_ASCII);
-			@ftp_close($ftpstream);
 			
 			$link = $tmpDirRel . sanitize_title( $_POST['campaignSubject'] ) . '.html';
 			

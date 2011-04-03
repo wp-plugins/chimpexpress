@@ -46,6 +46,33 @@ function editLP(){
 		document.forms["wp_chimpexpress"].submit();
 	}
 }
+function deleteLP(){
+    var lpid = document.getElementsByName('lpid[]');
+    var isChecked = false;
+    for(i=0;i<lpid.length;i++){
+	    if( lpid[i].checked == true ){
+		    isChecked = true;
+	    }
+    }
+    if( !isChecked ){
+	    alert('<?php _e('Please select one or more landing pages from the list!', 'chimpexpress');?>');
+    } else {
+	if( confirm( '<?php _e('Are you sure you want to delete the selected landing pages? There is no undo!', 'chimpexpress');?>' ) ){
+	    var filenames = new Array();
+	    for(i=0;i<lpid.length;i++){
+		    if( lpid[i].checked == true ){
+			    filenames.push( lpid[i].value );
+		    }
+	    }
+	    var data = { action: "archive_deleteLP",
+			 filenames : filenames
+	    };
+	    jQuery.post(ajaxurl, data, function(response) {
+		    window.location = 'admin.php?page=ChimpExpressArchive';
+	    });
+	}
+    }
+}
 </script>
 	<div id="loggedInStatus">
 	<?php if ( $_SESSION['MCping'] ){
@@ -60,22 +87,32 @@ function editLP(){
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
 		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
-	<?php }?> 
-	<?php 
+	<?php }?>
+	<?php
+	global $wp_filesystem;
+	if( $wp_filesystem->method != 'direct' ){
 	$chimpexpress = new chimpexpress;
 	$ftpstream = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
 	$login = @ftp_login($ftpstream, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
-	if (   !$chimpexpress->_settings['ftpHost'] 
-		|| !$chimpexpress->_settings['ftpUser'] 
-		|| !$chimpexpress->_settings['ftpPasswd'] 
+	$ftproot = @ftp_chdir($ftpstream, $chimpexpress->_settings['ftpPath'] );
+	$adminDir = @ftp_chdir($ftpstream, 'wp-admin' );
+	if (   $wp_filesystem->method != 'direct'
+		&& (
+		!$chimpexpress->_settings['ftpHost']
+		|| !$chimpexpress->_settings['ftpUser']
+		|| !$chimpexpress->_settings['ftpPasswd']
 		|| !$ftpstream
 		|| !$login
+		|| !$ftproot
+		|| !$adminDir
+		)
 	 ){ ?>
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
-		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please enter valid ftp credentials!', 'chimpexpress');?></a>
+		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Direct file access not possible. Please enter valid ftp credentials in the configuration!', 'chimpexpress');?></a>
 	</div>
 	<?php }
 	@ftp_close($ftpstream);
+	}
 	?>
 	<div style="display:block;height:3em;"></div>
 	
@@ -92,45 +129,50 @@ function editLP(){
 	if( isset( $files[0] ) ){
 	?>
 	<table width="100%" class="widefat">
-		<thead>
-			<tr>
-				<th width="20"></th>
-				<th><?php _e('Campaign Subject', 'chimpexpress');?></th>
-				<th width="150" nowrap="nowrap" style="text-align:center;"><?php _e('created / modified', 'chimpexpress');?></th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<th colspan="20"></th>
-			</tr>
-		</tfoot>
-		<tbody>
+	    <thead>
+		<tr>
+		    <th width="20"></th>
+		    <th><?php _e('Campaign Subject', 'chimpexpress');?></th>
+		    <th width="150" nowrap="nowrap" style="text-align:center;"><?php _e('created / modified', 'chimpexpress');?></th>
+		</tr>
+	    </thead>
+	    <tfoot>
+		<tr>
+		    <th colspan="20"></th>
+		</tr>
+	    </tfoot>
+	    <tbody>
 	<?php
 	foreach( $files as $f ){
 	?>
-			<tr>
-				<td style="vertical-align:middle;">
-					<input type="checkbox" name="lpid[]" value="<?php echo $f['name'];?>" />
-				</td>
-				<td>
-					<a href="<?php echo $archiveDirRel.$f['name'];?>" target="_blank"><?php echo $f['name'];?></a>
-				</td>
-				<td align="center" nowrap="nowrap">
-					<?php echo strftime('%b %d, %Y %H:%M', $f['created'] );?>
-				</td>
-			</tr>
+		<tr>
+		    <td style="vertical-align:middle;">
+			<input type="checkbox" name="lpid[]" value="<?php echo $f['name'];?>" />
+		    </td>
+		    <td>
+			<a href="<?php echo $archiveDirRel.$f['name'];?>" target="_blank"><?php echo $f['name'];?></a>
+		    </td>
+		    <td align="center" nowrap="nowrap">
+			<?php echo strftime('%b %d, %Y %H:%M', $f['created'] );?>
+		    </td>
+		</tr>
 	<?php
 	}
 	?>
-		</tbody>
+	    </tbody>
 	</table>
 	<br />
 	<a href="javascript:editLP()" class="button">&nbsp;&nbsp;<?php _e('Edit', 'chimpexpress');?>&nbsp;&nbsp;</a>
+	&nbsp;&nbsp;
+	<a href="javascript:deleteLP()" class="button" style="color:#A50000;float:right;">&nbsp;&nbsp;<?php _e('Delete', 'chimpexpress');?>&nbsp;&nbsp;</a>
+	<div style="clear:both;"></div>
+	<br />
+	<br />
 	</form>
 	<?php 
 	} else {
-		_e('No landing pages found!', 'chimpexpress');
-		echo '<br />';
+	    _e('No landing pages found!', 'chimpexpress');
+	    echo '<br />';
 	} ?>
 	
 	<a id="gotoDashboard" class="button" style="float:right;" href="javascript:void(0);" title="<?php _e('Dashboard', 'chimpexpress');?>"><?php _e('Dashboard', 'chimpexpress');?></a>
@@ -141,33 +183,35 @@ function editLP(){
 
 <?php
 function getDirectoryList( $directory ) {
-	// create an array to hold directory list
-	$results = array();
-	
-	// create a handler for the directory
-	$handler = opendir($directory);
-	
-	// open directory and walk through the filenames
-	while ($file = readdir($handler)) {
-		// if file isn't this directory or its parent, add it to the results
-		if ($file != "." && $file != "..") {
-			// only return .html files
-			if( substr( $file, -5) == '.html' ){
-				$results[] = array('name' => $file, 'created' => filemtime( $directory . $file ) );
-			}
-		}
+    // create an array to hold directory list
+    $results = array();
+    $gmtOffset=get_option('gmt_offset');
+    $serverOffset = date("O") / 100;
+    // create a handler for the directory
+    $handler = opendir($directory);
+
+    // open directory and walk through the filenames
+    while ($file = readdir($handler)) {
+	// if file isn't this directory or its parent, add it to the results
+	if ($file != "." && $file != "..") {
+	    // only return .html files
+	    if( substr( $file, -5) == '.html' ){
+		$creationTime = ( $gmtOffset != $serverOffset ) ? (filemtime( $directory . $file ) + ( $gmtOffset * 60 * 60)) : filemtime( $directory . $file );
+		$results[] = array('name' => $file, 'created' => $creationTime );
+	    }
 	}
-	// close the directory handler
-	closedir($handler);
-	
-	return $results;
+    }
+    // close the directory handler
+    closedir($handler);
+
+    return $results;
 }
 
 function cmp($a, $b)
 {
-	if ($a['created'] == $b['created']) {
-		return 0;
-	}
-	return ($a['created'] < $b['created']) ? 1 : -1;
+    if ($a['created'] == $b['created']) {
+	return 0;
+    }
+    return ($a['created'] < $b['created']) ? 1 : -1;
 }
 
