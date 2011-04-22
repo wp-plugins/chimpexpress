@@ -3,8 +3,8 @@ Contributors: freakedout
 Donate link: http://www.chimpexpress.com
 Tags: mailchimp, newsletter
 Requires at least: 3
-Tested up to: 3.1
-Stable tag: 1.2
+Tested up to: 3.1.1
+Stable tag: 1.3
 
 ChimpExpress - The MailChimp WordPress Integration
 
@@ -22,13 +22,10 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. Configure the settings according to your needs through the 'Settings' > 'ChimpExpress' menu
 5. Start creating campaigns or import content from MailChimp
+6. If you need help please visit our forums at http://chimpexpress.com !
 
 == Upgrade Notice ==
 
-* If you are upgrading from version 1.2 or previous please either set the owner for the following folders to the server or delete the folders via ftp after the upgrade:
-* * /wp-content/plugins/chimpexpress/cache
-* * /wp-content/plugins/chimpexpress/tmp
-* * /archive   <= if you created landing pages do not delete this folder! Set the owner of this folder to the server instead (CHOWN).
 * If you need help please visit our forums at http://chimpexpress.com !
 
 == Frequently Asked Questions ==
@@ -53,7 +50,14 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 * php.js library updated to v3.24
 * Bugfix: writing files via ftp failed in some cases
 = 1.3 =
-* FTP credentials are no longer mandatory! If the plugin is able to write files directly you don't need to enter ftp credentials anymore.
+* FTP credentials are no longer mandatory! If the plugin is able to write files directly users don't have to enter ftp credentials anymore.
+* Import to landing page - added check to prevent unintentional overwriting of existing landing pages.
+* Import to landing page - added check to prevent empty page title.
 * Landing page archive - creation date now takes timezone offset from WordPress configuration into account.
 * Landing page archive - delete function added.
+* Compose page - added check to prevent empty campaign name and subject (consisting only of spaces).
+* Compose page - encoding campaign name and subject to html entities to avoid multiple escaping.
+* Compose page - fixed bug that caused user not being able to go from last step to second last.
+* Compose page - fixed bug that appeared in WordPress 3.1.1 and caused creation of multiple campaigns.
+* Settings page - error messages showed up even after the reason was corrected.
 * Updated German translations.

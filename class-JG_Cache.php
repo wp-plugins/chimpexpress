@@ -3,7 +3,7 @@
 // no direct access
 defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
-class JG_Cache {
+class chimpexpressJG_Cache {
 
     function __construct($dir, $useFTP = false, $handler = NULL)
     {

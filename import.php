@@ -85,7 +85,12 @@ jQuery(document).ready(function($) {
 		window.location = 'admin.php?page=ChimpExpressArchive';
 	});
 	*/ ?>
-	jQuery("#next").click( function(){
+	jQuery("#next").click( function( force ){
+
+		if( jQuery.trim( jQuery('#fileName').val() ) == '' ){
+		    alert( '<?php _e('Please enter a page title!', 'chimpexpress');?>');
+		    return;
+		}
 		if( jQuery('#typePost').is(':checked') || jQuery('#typePage').is(':checked') ){
 			
 			jQuery('#cancelContainer').html( '<img src="<?php echo plugins_url( '/images/ajax-loader.gif', __FILE__ );?>" style="position: relative;top: 1px;"/>' );
@@ -100,23 +105,26 @@ jQuery(document).ready(function($) {
 			} else {
 				var datatype = 'text';
 			}
-			var data = {
-				action: "import",
-				type: type,
-				datatype: datatype,
-				cid : jQuery('#cid').val(),
-				title: campaigns[jQuery('#cid').val()]['title'],
-				subject: campaigns[jQuery('#cid').val()]['subject'],
-				fileName: htmlentities( jQuery('#fileName').val() )
-			};
+			var data = {action: "import",
+				    type: type,
+				    datatype: datatype,
+				    cid : jQuery('#cid').val(),
+				    title: campaigns[jQuery('#cid').val()]['title'],
+				    subject: campaigns[jQuery('#cid').val()]['subject'],
+				    fileName: htmlentities( jQuery('#fileName').val() ),
+				    force: jQuery('#force').val()
+				   };
 			jQuery.post(ajaxurl, data, function(response) {
+			    if( response.error == 1 ){
+				jQuery('#cancelContainer').html( response.msg );
+			    } else {
 				if( type == 'post' ){
-					window.location = 'post.php?post='+response+'&action=edit';
+				    window.location = 'post.php?post='+response+'&action=edit';
 				} else {
-				//	jQuery('#gotoarchive').html('<form action="admin.php?page=ChimpExpressEditLandingPage" method="post" id="wp_chimpexpress_import"><input type="checkbox" name="lpid[]" value="'+htmlentities( jQuery('#fileName').val() )+'.html" /></form>');
-					jQuery('#lpid').val( htmlentities( jQuery('#fileName').val() )+'.html' );
-					document.forms["wp_chimpexpress_import"].submit();
+				    jQuery('#lpid').val( htmlentities( jQuery('#fileName').val() )+'.html' );
+				    document.forms["wp_chimpexpress_import"].submit();
 				}
+			    }
 			});
 		} else {
 			window.location = 'admin.php?page=ChimpExpressImport';
@@ -186,7 +194,7 @@ foreach($campaigns['data'] as $c){
 <input type="radio" name="type" id="typePost" value="post" checked="checked" />&nbsp;<label for="typePost"><?php _e('blog post', 'chimpexpress');?></label>
 &nbsp;&nbsp;&nbsp;&nbsp;
 <input type="radio" name="type" id="typePage" value="page" />&nbsp;<label for="typePage"><?php _e('landing page', 'chimpexpress');?></label>
-
+<input type="hidden" name="force" id="force" value="0" />
 <br />
 <br />
 
@@ -205,27 +213,19 @@ foreach($campaigns['data'] as $c){
 <br />
 <br />
 <br />
+<table style="vertical-align:middle;"><tr><td>
 <a class="button" id="next" href="javascript:void(0);" title="<?php _e('next &raquo;', 'chimpexpress');?>"><?php _e('next &raquo;', 'chimpexpress');?></a>
+</td><td>
 <span id="cancelContainer">
-<a id="cancel" class="grey" href="javascript:void(0);" title="<?php _e('cancel', 'chimpexpress');?>"><?php _e('cancel', 'chimpexpress');?></a>
+<a id="cancel" class="grey" style="position: relative;top: -1px;" href="javascript:void(0);" title="<?php _e('cancel', 'chimpexpress');?>"><?php _e('cancel', 'chimpexpress');?></a>
 </span>
+</td></tr></table>
 <div id="gotoarchive" style="display:none;">
 	<form action="admin.php?page=ChimpExpressEditLandingPage" method="post" id="wp_chimpexpress_import">
 	<input type="hidden" name="lpid[]" id="lpid" value="" />
 	</form>
 </div>
-<?php /*
-<a id="gotoArchive" class="button" href="javascript:void(0);" title="<?php _e('Landing Page Archive', 'chimpexpress');?>"><?php _e('Landing Page Archive', 'chimpexpress');?></a>
-*/ ?>
 <?php
-}
-
-function typePost(){
-	echo 'post';
-}
-
-function typePage(){
-	echo 'page';
 }
 ?>
 <?php include( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'footer.php' ); ?>

@@ -968,7 +968,7 @@ class chimpexpressMCAPI {
 		$this->_setNotices();
 	}
 
-	private function _emptyNotices() {
+	public function _emptyNotices() {
 		$this->_notices = array();
 		$this->_setNotices();
 	}

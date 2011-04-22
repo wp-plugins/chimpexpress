@@ -50,42 +50,62 @@ require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-editor.php' );
 <link media="all" type="text/css" href="css/colors-fresh.css" id="colors-css" rel="stylesheet">
 <script type="text/javascript">
 function gotoStep( from, to ){
-	if ( parseInt(from) == 1 && ( jQuery('#campaignName').val() == '' || jQuery('#campaignSubject').val() == '' ) ) {
+	if ( parseInt(from) == 1 && (  jQuery.trim( jQuery('#campaignName').val() ) == ''
+				    || jQuery.trim( jQuery('#campaignSubject').val() ) == '' ) ) {
 		alert( '<?php _e('Campaign name and subject line must be supplied!', 'chimpexpress');?>' );
 	} else if( (parseInt(to) == 1 && confirm('<?php _e('Are you sure you want to go back to step one? All entered content will be lost!', 'chimpexpress');?>') )
 				|| parseInt(to) != 1 )
 	{
+	    var stop = false;
+	    if ( parseInt(from) == 1 && jQuery.trim( jQuery('#campaignName').val() ) != ''
+				        && jQuery.trim( jQuery('#campaignSubject').val() ) != '' ){
+	    var data = { action: "sanitize", string: jQuery.trim( jQuery('#campaignName').val()+'*|@|*'+jQuery.trim( jQuery('#campaignSubject').val() ) ) };
+	    jQuery('#ajaxLoader').css( 'visibility', '' );
+	    jQuery.ajaxSetup({async:false});
+	    jQuery.post(ajaxurl, data, function(response) {
+		    if ( response == '' ){
+			jQuery('#ajaxLoader').css( 'visibility', 'hidden' );
+			alert('<?php _e('Campaign name and subject can not consist exclusively of special characters!', 'chimpexpress');?>');
+			stop = true;
+		    }
+		});
+	    }
+
+	    if( !stop ){
 		var sections = jQuery('#sections').val();
 		var editorContent = jQuery('#editorContent').val();
-		if( parseInt(from) != 1 && parseInt(from) != parseInt(sections + 2) && parseInt(to) > 2 && (parseInt(to)-2) <= parseInt(sections) ){
+		if( parseInt(from) != 1 &&
+		    parseInt(from) != (parseInt(sections) + 2) ){
 			editorContent = editorContent.split('|###|');
 			if(tinyMCE.activeEditor != undefined){
-				currentContent = tinyMCE.activeEditor.getContent();
+			    currentContent = tinyMCE.activeEditor.getContent();
 			}
 			editorContent[parseInt(from)-2] = currentContent;
 			editorContent = editorContent.join('|###|');
 		}
-		var data = { action: "compose_gotoStep",
-			step: to,
-			listId: jQuery('#listId').val(),
-			default_from_name: jQuery('#default_from_name').val(),
-			default_from_email: jQuery('#default_from_email').val(),
-			template: jQuery('#template').val(),
-			templateName: jQuery('#templateName').val(),
-			sections: jQuery('#sections').val(),
-			sectionNames: jQuery('#sectionNames').val(),
-			skipSections: jQuery('#skipSections').val(), 
-			editorContent: editorContent,
-			campaignName: jQuery('#campaignName').val(),
-			campaignSubject: jQuery('#campaignSubject').val(),
-			campaignId : jQuery('#campaignId').val()
-			
-		};
+
+		var data = {	action: "compose_gotoStep",
+				step: to,
+				listId: jQuery('#listId').val(),
+				default_from_name: jQuery('#default_from_name').val(),
+				default_from_email: jQuery('#default_from_email').val(),
+				template: jQuery('#template').val(),
+				templateName: jQuery('#templateName').val(),
+				sections: jQuery('#sections').val(),
+				sectionNames: jQuery('#sectionNames').val(),
+				skipSections: jQuery('#skipSections').val(),
+				editorContent: editorContent,
+				campaignName: htmlentities(jQuery('#campaignName').val()),
+				campaignSubject: htmlentities(jQuery('#campaignSubject').val()),
+				campaignId : jQuery('#campaignId').val()
+			    };
 		
 		jQuery('#ajaxLoader').css( 'visibility', '' );
+		jQuery.ajaxSetup({async:true});
 		jQuery.post(ajaxurl, data, function(response) {
 			jQuery('.wrap').html( response );
 		});
+	    }
 	}
 }
 
@@ -145,14 +165,15 @@ jQuery(document).ready(function($) {
 	
 	$('#preview_image a').colorbox();
 	
-	
+	jQuery("#reloadCache a").unbind('click');
 	jQuery("#reloadCache a").click( function(){
 		var data = { action: "compose_clear_cache" };
 		jQuery.post(ajaxurl, data, function(response) {
 			window.location = 'admin.php?page=ChimpExpressCompose';
 		});
 	});
-	
+
+	jQuery("#cancel").unbind('click');
 	jQuery("#cancel").click( function(){
 		if(confirm('<?php _e('Are you sure you want to cancel? All entered content will be lost!', 'chimpexpress');?>')){
 			window.location = 'admin.php?page=ChimpExpressDashboard';
@@ -160,7 +181,8 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 	});
-	
+
+	jQuery("#cancelCompose").unbind('click');
 	jQuery("#cancelCompose").click( function(){
 		if(confirm('<?php _e('Are you sure you want to cancel? All entered content will be lost!', 'chimpexpress');?>')){
 			removeDraft();
@@ -168,7 +190,8 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 	});
-	
+
+	jQuery("#gotoMailChimp").unbind('click');
 	jQuery("#gotoMailChimp").click( function(){
 		window.location = 'admin.php?page=ChimpExpressDashboard';
 	});
@@ -209,32 +232,25 @@ function createSteps( id, sections ){
 	var thisStep = 2;
 	var x = 2;
 	for(i=0;i<sections;i++){
-//		if( !strstr( templates[id]['skipSections'], i) ){
-		//	thisStep = i + 2;
-			stepButton += '<div class="bgLine"></div><div id="step'+x+'" class="step ';
-			if( thisStep == <?php echo $step;?> ){
-				stepButton += 'activeStep';
-			} else {
-				stepButton += 'inactiveStep';
-			}
-			stepButton += '"><a href="javascript:gotoStep(<?php echo $step;?>,'+x+');" title="go to step '+thisStep+'">'+thisStep+'</a>';
-			stepButton += '<div class="stepSubTitle">'+templates[id]['sectionNames'][i]+'</div>';
-			stepButton += '</div>';
-			
-			thisStep++;
-//		}
-		x++;
+	    stepButton += '<div class="bgLine"></div><div id="step'+x+'" class="step ';
+	    if( thisStep == <?php echo $step;?> ){
+		stepButton += 'activeStep';
+	    } else {
+		stepButton += 'inactiveStep';
+	    }
+	    stepButton += '"><a href="javascript:gotoStep(<?php echo $step;?>,'+x+');" title="go to step '+thisStep+'">'+thisStep+'</a>';
+	    stepButton += '<div class="stepSubTitle">'+templates[id]['sectionNames'][i]+'</div>';
+	    stepButton += '</div>';
+	    thisStep++;
+	    x++;
 	}
 	// add last step
-//	skip = substr_count(templates[id]['skipSections'], ',');
-//	if( skip > 0 ) { skip = skip + 1; }
-//	var stepSubmit = parseInt( sections ) + 2 - skip;
 	var stepSubmit = parseInt( sections ) + 2;
 	stepButton = stepButton + '<div class="bgLine"></div><div id="step'+stepSubmit+'" class="step lastStep ';
 	if( stepSubmit == <?php echo $step;?> ){
-		stepButton += 'activeStep';
+	    stepButton += 'activeStep';
 	} else {
-		stepButton += 'inactiveStep';
+	    stepButton += 'inactiveStep';
 	}
 	
 	stepButton += '"><a href="javascript:gotoStep(<?php echo $step;?>,'+stepSubmit+');" title="<?php _e('go to step', 'chimpexpress');?> '+stepSubmit+'">'+stepSubmit+'</a>';
@@ -244,44 +260,49 @@ function createSteps( id, sections ){
 	jQuery('#stepsTemplateSections').html('').append( stepButton );
 
 	if( <?php echo ($step);?> < ( parseInt(sections) + 2 ) ){
-		jQuery("#nextStep").click( function(){
-			gotoStep( <?php echo $step;?>, <?php echo $step + 1;?> );
-		});
-		jQuery("#next").click( function(){
-			gotoStep( <?php echo $step;?>, <?php echo $step + 1;?> );
-		});
+	    jQuery("#nextStep").unbind('click');
+	    jQuery("#nextStep").click( function(){
+		gotoStep( <?php echo $step;?>, <?php echo $step + 1;?> );
+		return;
+	    });
+	    jQuery("#next").unbind('click');
+	    jQuery("#next").click( function(){
+		gotoStep( <?php echo $step;?>, <?php echo $step + 1;?> );
+		return;
+	    });
 	} else {
-		jQuery("#nextStep a").css('cursor','no-drop');
+	    jQuery("#nextStep a").css('cursor','no-drop');
 	}
-	<?php if ( ($step - 1) >= 1 ){?>
+	<?php if ( ($step - 1) >= 1 ){ ?>
+	jQuery("#prevStep").unbind('click');
 	jQuery("#prevStep").click( function(){
-		gotoStep( <?php echo $step;?>, <?php echo $step - 1;?> );
+	    gotoStep( <?php echo $step;?>, <?php echo $step - 1;?> );
 	});
 	<?php } else { ?>
 	jQuery("#prevStep a").css('cursor','no-drop');
 	<?php } ?>
 	
 	jQuery(".step").hover(
-		function () {
-			if( jQuery(this).attr('id') != 'step<?php echo $step;?>' ){
-				jQuery(this).removeClass('inactiveStep');
-				jQuery(this).addClass('activeStep');
-			}
-		}, 
-		function () {
-			if( jQuery(this).attr('id') != 'step<?php echo $step;?>' ){
-				jQuery(this).removeClass('activeStep');
-				jQuery(this).addClass('inactiveStep');
-			}
+	    function () {
+		if( jQuery(this).attr('id') != 'step<?php echo $step;?>' ){
+		    jQuery(this).removeClass('inactiveStep');
+		    jQuery(this).addClass('activeStep');
 		}
+	    },
+	    function () {
+		if( jQuery(this).attr('id') != 'step<?php echo $step;?>' ){
+		    jQuery(this).removeClass('activeStep');
+		    jQuery(this).addClass('inactiveStep');
+		}
+	    }
 	);
 	jQuery(".prevNext").hover(
-		function () {
-			jQuery(this).css('opacity', 1);
-		}, 
-		function () {
-			jQuery(this).css('opacity', '');
-		}
+	    function () {
+		jQuery(this).css('opacity', 1);
+	    },
+	    function () {
+		jQuery(this).css('opacity', '');
+	    }
 	);
 	
 	jQuery('.step').equalWidths();
@@ -299,16 +320,16 @@ document.write=function(e){ buttons = buttons + e; jQuery("#quicktags").html(but
 <![endif]-->
 	<div id="loggedInStatus">
 	<?php if ( $_SESSION['MCping'] ){
-		echo sprintf(__('connected as <a href="options-general.php?page=ChimpExpressConfig">%s</a>', 'chimpexpress'), $_SESSION['MCusername']);
+	    echo sprintf(__('connected as <a href="options-general.php?page=ChimpExpressConfig">%s</a>', 'chimpexpress'), $_SESSION['MCusername']);
 	} else {
-		_e('<a href="options-general.php?page=ChimpExpressConfig">connect your MailChimp account</a>', 'chimpexpress');
+	    _e('<a href="options-general.php?page=ChimpExpressConfig">connect your MailChimp account</a>', 'chimpexpress');
 	}?>
 	</div>
 	<h2 class="componentHeading">ChimpExpress</h2>
 	<div class="clr"></div>
 	<?php if ( ! $_SESSION['MCping'] ){ ?>
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
-		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
+	    <a href="options-general.php?page=ChimpExpressConfig"><?php _e('Please connect your MailChimp account!', 'chimpexpress');?></a>
 	</div>
 	<?php }?>
 	<?php
@@ -331,7 +352,7 @@ document.write=function(e){ buttons = buttons + e; jQuery("#quicktags").html(but
 		)
 	 ){ ?>
 	<div class="updated" style="width:100%;text-align:center;padding:10px 0 13px;">
-		<a href="options-general.php?page=ChimpExpressConfig"><?php _e('Direct file access not possible. Please enter valid ftp credentials in the configuration!', 'chimpexpress');?></a>
+	    <a href="options-general.php?page=ChimpExpressConfig"><?php _e('Direct file access not possible. Please enter valid ftp credentials in the configuration!', 'chimpexpress');?></a>
 	</div>
 	<?php }
 	@ftp_close($ftpstream);
@@ -347,110 +368,110 @@ document.write=function(e){ buttons = buttons + e; jQuery("#quicktags").html(but
 	<div id="tName"><?php echo (isset($_POST['templateName']))? $_POST['templateName'] : '';?></div>
 	
 	<div id="stepsContainer">
-		<div id="stepsContainerInner">
-			<div id="prevStep" class="prevNext">
-				<a href="javascript:void(0);" title="<?php _e('previous step', 'chimpexpress');?>"><?php _e('previous step', 'chimpexpress');?></a>
-			</div>
-			
-			<div id="step1" class="step <?php echo ( $step == 1 ) ? 'activeStep' : 'inactiveStep';?>">
-				<a href="javascript:gotoStep(<?php echo $step;?>,1);" title="<?php _e('go to step', 'chimpexpress');?> 1">1</a>
-				<div class="stepSubTitle"><?php _e('settings', 'chimpexpress');?></div>
-			</div>
-			
-			<div id="stepsTemplateSections"></div>
-			
-			<div id="nextStep" class="prevNext">
-				<a href="javascript:void(0);" title="<?php _e('next step', 'chimpexpress');?>"><?php _e('next step', 'chimpexpress');?></a>
-			</div>
-			<div class="clr"></div>
+	    <div id="stepsContainerInner">
+		<div id="prevStep" class="prevNext">
+		    <a href="javascript:void(0);" title="<?php _e('previous step', 'chimpexpress');?>"><?php _e('previous step', 'chimpexpress');?></a>
+		</div>
+
+		<div id="step1" class="step <?php echo ( $step == 1 ) ? 'activeStep' : 'inactiveStep';?>">
+		    <a href="javascript:gotoStep(<?php echo $step;?>,1);" title="<?php _e('go to step', 'chimpexpress');?> 1">1</a>
+		    <div class="stepSubTitle"><?php _e('settings', 'chimpexpress');?></div>
+		</div>
+
+		<div id="stepsTemplateSections"></div>
+
+		<div id="nextStep" class="prevNext">
+		    <a href="javascript:void(0);" title="<?php _e('next step', 'chimpexpress');?>"><?php _e('next step', 'chimpexpress');?></a>
 		</div>
 		<div class="clr"></div>
+	    </div>
+	    <div class="clr"></div>
 	</div>
 	<div class="clr"></div>
 	<div id="ajaxLoader" style="visibility:hidden;">
-		<img src="<?php echo plugins_url( '/images/ajax-loader.gif', __FILE__ );?>" />
+	    <img src="<?php echo plugins_url( '/images/ajax-loader.gif', __FILE__ );?>" />
 	</div>
 	
 <?php
 if($step == 1){
-	step1();
+    step1();
 } else if( $step > ($_POST['sections']+1) ) {
-	stepSubmit();
+    stepSubmit();
 } else {
-	stepContent( $step );
+    stepContent( $step );
 }
 
 function step1(){
-	global $wp_filesystem;
-	$MCAPI = new chimpexpressMCAPI;
-	$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
+    global $wp_filesystem;
+    $MCAPI = new chimpexpressMCAPI;
+    $cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
 
-	if( $wp_filesystem->method == 'direct' ){
-	    $useFTP = false;
-	    $handler = $wp_filesystem;
-	    if( ! is_dir( ABSPATH . $cacheDir ) ){
-		$wp_filesystem->mkdir( ABSPATH . $cacheDir);
+    if( $wp_filesystem->method == 'direct' ){
+	$useFTP = false;
+	$handler = $wp_filesystem;
+	if( ! is_dir( ABSPATH . $cacheDir ) ){
+	    $wp_filesystem->mkdir( ABSPATH . $cacheDir);
+	}
+    } else {
+	$useFTP = true;
+	$chimpexpress = new chimpexpress;
+	$handler = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+	$login = @ftp_login($handler, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+	@ftp_chdir($handler, $chimpexpress->_settings['ftpPath'] );
+	if( ! is_dir( ABSPATH . $cacheDir ) ){
+	    @ftp_mkdir($handler, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
+	}
+    }
+	
+    $cache = new chimpexpressJG_Cache( $cacheDir, $useFTP, $handler );
+
+    $templates = $cache->get('templates');
+    if ($templates === FALSE){
+	$templates = $MCAPI->templates();
+	$cache->set('templates', $templates);
+    }
+    $templateInfo = array();
+    if( isset($templates['user']) ){
+	foreach($templates['user'] as $t){
+	    $templateInfo[$t['id']] = $cache->get( 'templateInfo_'.$t['id'] );
+	    if ($templateInfo[$t['id']] === FALSE){
+		$templateInfo[$t['id']] = $MCAPI->templateInfo($t['id']);
+		$cache->set('templateInfo_'.$t['id'], $templateInfo[$t['id']]);
 	    }
-	} else {
-	    $useFTP = true;
-	    $chimpexpress = new chimpexpress;
-	    $handler = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
-	    $login = @ftp_login($handler, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
-	    @ftp_chdir($handler, $chimpexpress->_settings['ftpPath'] );
-	    if( ! is_dir( ABSPATH . $cacheDir ) ){
-		@ftp_mkdir($handler, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
+	}
+    }
+	
+    $lists = $cache->get('lists');
+    if ($lists === FALSE){
+	$MCAPI = new chimpexpressMCAPI;
+	$result = true;
+	$lists = array();
+	$page = 0;
+	$limit = 100;
+	while( $result ){
+	    $result = $MCAPI->lists( '', $page, $limit );
+	    if( ! isset( $result['data'][0] ) ){
+		$result = false;
+	    } else {
+		$lists = array_merge( $lists, $result['data']);
+		$page++;
 	    }
 	}
+	$cache->set('lists', $lists);
+    }
 	
-	$cache = new JG_Cache( $cacheDir, $useFTP, $handler );
-	
-	$templates = $cache->get('templates');
-	if ($templates === FALSE){
-		$templates = $MCAPI->templates();  
-		$cache->set('templates', $templates);  
-	}
-	$templateInfo = array();
-	if( isset($templates['user']) ){
-		foreach($templates['user'] as $t){
-			$templateInfo[$t['id']] = $cache->get( 'templateInfo_'.$t['id'] );
-			if ($templateInfo[$t['id']] === FALSE){  
-				$templateInfo[$t['id']] = $MCAPI->templateInfo($t['id']);
-				$cache->set('templateInfo_'.$t['id'], $templateInfo[$t['id']]);  
-			}
-		}
-	}
-	
-	$lists = $cache->get('lists');
-	if ($lists === FALSE){
-		$MCAPI = new chimpexpressMCAPI;
-		$result = true;
-		$lists = array();
-		$page = 0;
-		$limit = 100;
-		while( $result ){
-			$result = $MCAPI->lists( '', $page, $limit );
-			if( ! isset( $result['data'][0] ) ){
-				$result = false;
-			} else {
-				$lists = array_merge( $lists, $result['data']);
-				$page++;
-			}
-		}
-		$cache->set('lists', $lists);  
-	}
-	
-	if( !$templates || !$lists ){
-		_e('Connection to MailChimp failed! Please <a href="admin.php?page=ChimpExpressCompose">click here</a> to reload this page.', 'chimpexpress');
-		exit;
-	}
+    if( !$templates || !$lists ){
+	_e('Templates and lists could not be retrieved! Please make sure you have set up templates and lists in MailChimp. <span id="reloadCache"><a href="javascript:void(0)">Click here to re-try.</a>', 'chimpexpress');
+	exit;
+    }
 ?>
 <script type="text/javascript">jQuery(document).ready(function($) {
-	if( $('#template').val() ){
-		$('#template').trigger('change'); 
-	}
-	if( $('#listId').val() ){
-		$('#listId').trigger('change');
-	}
+    if( $('#template').val() ){
+	$('#template').trigger('change');
+    }
+    if( $('#listId').val() ){
+	$('#listId').trigger('change');
+    }
 });
 </script>
 <label for="template"><?php _e('select an email template', 'chimpexpress');?></label><br />
@@ -520,11 +541,11 @@ function step1(){
 <br />
 <br />
 <label for="campaignName"><?php _e('campaign name', 'chimpexpress');?></label><br />
-<input type="text" size="75" name="campaignName" id="campaignName" class="inputWide" value="<?php echo (isset($_POST['campaignName']))? $_POST['campaignName']:'';?>" /><br />
+<input type="text" size="75" maxlength="100" name="campaignName" id="campaignName" class="inputWide" value="<?php echo (isset($_POST['campaignName']))? $_POST['campaignName']:'';?>" /><br />
 <br />
 <label for="campaignSubject"><?php _e('subject line', 'chimpexpress');?></label><br />
-<input type="text" size="75" name="campaignSubject" id="campaignSubject" class="inputWide" value="<?php echo (isset($_POST['campaignSubject']))? $_POST['campaignSubject']:'';?>" /><br />
-<br />
+<input type="text" size="75" maxlength="100" name="campaignSubject" id="campaignSubject" class="inputWide" value="<?php echo (isset($_POST['campaignSubject']))? $_POST['campaignSubject']:'';?>" /><br />
+<br /> 
 <a class="button" id="next" href="javascript:void(0);" title="<?php _e('next &raquo;', 'chimpexpress');?>"><?php _e('next &raquo;', 'chimpexpress');?></a>
 <a id="cancel" class="grey" href="javascript:void(0);" title="<?php _e('cancel', 'chimpexpress');?>"><?php _e('cancel', 'chimpexpress');?></a>
 
@@ -533,7 +554,7 @@ function step1(){
 <input type='hidden' name='templateName' id='templateName' value='<?php echo (isset($_POST['templateName']))? $_POST['templateName'] : '';?>' />
 <input type='hidden' name='sectionNames' id='sectionNames' value="<?php echo (isset($_POST['sectionNames']))? $_POST['sectionNames'] : '';?>" />
 <input type='hidden' name='skipSections' id='skipSections' value="<?php echo $skipSections;?>" />
-<input type='hidden' name='editorContent' id='editorContent' value="<?php echo (isset($_POST['editorContent']))? str_replace('"','\"',$_POST['editorContent']) : '';?>" />
+<input type='hidden' name='editorContent' id='editorContent' value="<?php echo (isset($_POST['editorContent']))? str_replace('\"','',$_POST['editorContent']) : '';?>" />
 
 <input type='hidden' name='campaignId' id='campaignId' value="<?php echo (isset($_POST['campaignId']))? $_POST['campaignId'] : '0';?>" />
 
@@ -641,8 +662,14 @@ function stepSubmit(){
 	){
 		$options = array();
 		$options['list_id'] = $_POST['listId'];
-		$options['title'] = $_POST['campaignName'];
-		$options['subject'] = $_POST['campaignSubject'];
+		$options['title'] = html_entity_decode($_POST['campaignName']);
+		$options['subject'] = html_entity_decode($_POST['campaignSubject']);
+
+		$replace = array('&#039;', '&amp;');
+		$with	 = array("'", '&');
+		$options['title']   = str_replace($replace, $with, $options['title']);
+		$options['subject'] = str_replace($replace, $with, $options['subject']);
+
 		$options['template_id'] = $_POST['template'];
 		
 		$content = array();
@@ -788,14 +815,14 @@ jQuery(document).ready(function($) {
 $MCAPI->showMessages();
 
 function rrmdir($dir) {
-	if (is_dir($dir)) {
-		$objects = scandir($dir);
-		foreach ($objects as $object) {
-			if ($object != "." && $object != "..") {
-				if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
-			}
-		}
-		reset($objects);
-		rmdir($dir);
+    if (is_dir($dir)) {
+	$objects = scandir($dir);
+	foreach ($objects as $object) {
+	    if ($object != "." && $object != "..") {
+		if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+	    }
 	}
+	reset($objects);
+	rmdir($dir);
+    }
 }
