@@ -266,8 +266,7 @@ class chimpexpress
 		$this->_settings['CEaccess'],
 		'ChimpExpressDashboard',
 		array($this, 'main'),
-		plugins_url( 'images' . DS . 'logo_16.png', __FILE__ ),
-		26
+		plugins_url( 'images' . DS . 'logo_16.png', __FILE__ )
 	);
 	add_submenu_page(
 		'ChimpExpressDashboard',
@@ -276,8 +275,7 @@ class chimpexpress
 		$this->_settings['CEaccess'],
 		'ChimpExpressImport',
 		array($this, 'import'),
-		'',
-		27
+		''
 	);
 	add_submenu_page(
 		'ChimpExpressDashboard',
@@ -286,8 +284,7 @@ class chimpexpress
 		$this->_settings['CEaccess'],
 		'ChimpExpressCompose',
 		array($this, 'compose'),
-		'',
-		27
+		''
 	);
 	add_submenu_page(
 		'ChimpExpressDashboard',
@@ -296,8 +293,7 @@ class chimpexpress
 		$this->_settings['CEaccess'],
 		'ChimpExpressArchive',
 		array($this, 'archive'),
-		'',
-		27
+		''
 	);
 	// invisible menus
 	add_submenu_page(
@@ -307,8 +303,7 @@ class chimpexpress
 		$this->_settings['CEaccess'],
 		'ChimpExpressEditLandingPage',
 		array($this, 'editLP'),
-		'',
-		27
+		''
 	);
 
 	add_options_page(
