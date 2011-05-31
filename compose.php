@@ -103,7 +103,7 @@ function gotoStep( from, to ){
 		jQuery('#ajaxLoader').css( 'visibility', '' );
 		jQuery.ajaxSetup({async:true});
 		jQuery.post(ajaxurl, data, function(response) {
-			jQuery('.wrap').html( response );
+			jQuery('#CEwrap').html( response );
 		});
 	    }
 	}
@@ -313,9 +313,9 @@ document.write=function(e){ buttons = buttons + e; jQuery("#quicktags").html(but
 </script>
 <!--[if lt IE 8]>
 <style type="text/css">
-.prevNext { 	display:inline; top:-25px; }
-.step { 	display:inline; }
-.bgLine { 	display:inline; top:-33px; }
+#CEwrap .prevNext { 	display:inline; top:-25px; }
+#CEwrap .step { 	display:inline; }
+#CEwrap .bgLine { 	display:inline; top:-33px; }
 </style>
 <![endif]-->
 	<div id="loggedInStatus">
@@ -676,9 +676,9 @@ function stepSubmit(){
 		$sectionNames = explode('|###|', $_POST['sectionNames']);
 		$editorContent = explode('|###|', $_POST['editorContent']);
 		for($i=0;$i<count($sectionNames);$i++){
-			if($sectionNames[$i] != 'header' && $sectionNames[$i] != 'footer'){
-			$content['html_'.$sectionNames[$i]] = trim(str_replace(array('\"',"\'"),array('',"'"), $editorContent[$i]));
-		}
+		    if($sectionNames[$i] != 'header' && $sectionNames[$i] != 'footer'){
+			$content['html_'.$sectionNames[$i]] = trim(str_replace(array('\\','\"',"\'"),array('','"',"'"), $editorContent[$i]));
+		    }
 		}
 		
 		if( $_POST['campaignId'] ){

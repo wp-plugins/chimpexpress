@@ -3,12 +3,12 @@
  * Plugin Name: ChimpExpress
  * Plugin URI: http://www.chimpexpress.com
  * Description: Wordpress MailChimp Integration - Create MailChimp campaign drafts from within Wordpress and include blog posts or import recent campaigns into Wordpress to create blog posts or landing pages. Requires PHP5. If you're having trouble with the plugin visit our forums http://www.chimpexpress.com/support.html Thank you!
- * Version: 1.4
+ * Version: 1.5
  * Author: freakedout
  * Author URI: http://www.freakedout.de
  * License: GNU/GPL 2
  * Copyright (C) 2011  freakedout (www.freakedout.de)
- * 
+ *  
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as 
  * published by the Free Software Foundation.
@@ -50,8 +50,8 @@ class chimpexpress
 
 //  public $_api = false;
 	
-    function __construct() {
-		
+    function __construct()
+    {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-MCAPI.php' );
 	if( ! $this->MCAPI ){
 	    $this->MCAPI = new chimpexpressMCAPI;
@@ -97,11 +97,7 @@ class chimpexpress
 	add_filter( 'pre_update_option_' . $this->_optionsName, array( $this, 'optionUpdate' ), null, 2 );
 //	add_action( 'admin_notices', array($this->MCAPI, 'showMessages') );
 
-	// add css files
-	wp_enqueue_style( 'chimpexpress', plugins_url( 'css' . DS . 'chimpexpress.css', __FILE__ ) );
-	wp_enqueue_style( 'colorbox', plugins_url( 'css' . DS . 'colorbox.css', __FILE__ ) );
-	// add js files
-	wp_enqueue_script( 'chimpexpress', plugins_url( 'js' . DS . 'jquery.colorbox-min.js', __FILE__ ) );
+	
 	// compose ajax callbacks
 	add_action('wp_ajax_compose_clear_cache', array($this,'compose_clear_cache_callback'));
 	add_action('wp_ajax_compose_gotoStep', array($this,'compose_gotoStep_callback'));
@@ -119,8 +115,9 @@ class chimpexpress
 
 //	add_filter('admin_head', array($this,'ShowTinyMCE'));
     }
-	
-    function ShowTinyMCE() {
+
+    function ShowTinyMCE()
+    {
 	// conditions here
 	wp_enqueue_script( 'common' );
 	wp_enqueue_script( 'jquery-color' );
@@ -134,7 +131,8 @@ class chimpexpress
 	do_action('admin_print_styles');
     }
 	
-    public function optionUpdate( $newvalue, $oldvalue ) {
+    public function optionUpdate( $newvalue, $oldvalue )
+    {
 	if ( !empty( $_POST['get-apikey'] ) ) {
 	    unset( $_POST['get-apikey'] );
 
@@ -258,66 +256,76 @@ class chimpexpress
 	register_setting( $this->_optionsGroup, $this->_optionsName );
     }
 
-    public function adminMenu() {
-		
-	add_menu_page(
-		__('Dashboard', 'chimpexpress'),
-		'ChimpExpress',
-		$this->_settings['CEaccess'],
-		'ChimpExpressDashboard',
-		array($this, 'main'),
-		plugins_url( 'images' . DS . 'logo_16.png', __FILE__ )
-	);
-	add_submenu_page(
-		'ChimpExpressDashboard',
-		__('Import', 'chimpexpress'),
-		__('Import', 'chimpexpress'),
-		$this->_settings['CEaccess'],
-		'ChimpExpressImport',
-		array($this, 'import'),
-		''
-	);
-	add_submenu_page(
-		'ChimpExpressDashboard',
-		__('Compose', 'chimpexpress'),
-		__('Compose', 'chimpexpress'),
-		$this->_settings['CEaccess'],
-		'ChimpExpressCompose',
-		array($this, 'compose'),
-		''
-	);
-	add_submenu_page(
-		'ChimpExpressDashboard',
-		__('Landing Page Archive', 'chimpexpress'),
-		__('Landing Pages', 'chimpexpress'),
-		$this->_settings['CEaccess'],
-		'ChimpExpressArchive',
-		array($this, 'archive'),
-		''
-	);
+    public function adminMenu()
+    {
+	$pages = array();
+	$pages[] = add_menu_page(   __('Dashboard', 'chimpexpress'),
+				    'ChimpExpress',
+				    $this->_settings['CEaccess'],
+				    'ChimpExpressDashboard',
+				    array($this, 'main'),
+				    plugins_url( 'images' . DS . 'logo_16.png', __FILE__ )
+				);
+	
+	$pages[] = add_submenu_page(	'ChimpExpressDashboard',
+					__('Import', 'chimpexpress'),
+					__('Import', 'chimpexpress'),
+					$this->_settings['CEaccess'],
+					'ChimpExpressImport',
+					array($this, 'import'),
+					''
+				    );
+	$pages[] = add_submenu_page(	'ChimpExpressDashboard',
+					__('Compose', 'chimpexpress'),
+					__('Compose', 'chimpexpress'),
+					$this->_settings['CEaccess'],
+					'ChimpExpressCompose',
+					array($this, 'compose'),
+					''
+				    );
+	$pages[] = add_submenu_page(	'ChimpExpressDashboard',
+					__('Landing Page Archive', 'chimpexpress'),
+					__('Landing Pages', 'chimpexpress'),
+					$this->_settings['CEaccess'],
+					'ChimpExpressArchive',
+					array($this, 'archive'),
+					''
+				   );
 	// invisible menus
-	add_submenu_page(
-		'ChimpExpressArchive',
-		__('Edit Landing Page', 'chimpexpress'),
-		__('Edit Landing Page', 'chimpexpress'),
-		$this->_settings['CEaccess'],
-		'ChimpExpressEditLandingPage',
-		array($this, 'editLP'),
-		''
-	);
+	$pages[] = add_submenu_page(	'ChimpExpressArchive',
+					__('Edit Landing Page', 'chimpexpress'),
+					__('Edit Landing Page', 'chimpexpress'),
+					$this->_settings['CEaccess'],
+					'ChimpExpressEditLandingPage',
+					array($this, 'editLP'),
+					''
+				    );
 
-	add_options_page(
-		__('Settings', 'chimpexpress'),
-		'ChimpExpress',
-		'manage_options',
-		'ChimpExpressConfig',
-		array($this, 'options')
-	);
+	$pages[] = add_options_page(	__('Settings', 'chimpexpress'),
+					'ChimpExpress',
+					'manage_options',
+					'ChimpExpressConfig',
+					array($this, 'options')
+				    );
+
+	// enqueue css and js files
+	foreach( $pages as $page ){
+	    add_action('admin_print_styles-' . $page, array($this, 'chimpexpressAddAdminHead') );
+	}
+    }
+
+    function chimpexpressAddAdminHead()
+    {
+	// add css files
+	wp_enqueue_style( 'chimpexpress', plugins_url( 'css' . DS . 'chimpexpress.css', __FILE__ ) );
+	wp_enqueue_style( 'colorbox', plugins_url( 'css' . DS . 'colorbox.css', __FILE__ ) );
+	// add js files
+	wp_enqueue_script( 'chimpexpress', plugins_url( 'js' . DS . 'jquery.colorbox-min.js', __FILE__ ) );
     }
 
 
-    function compose_clear_cache_callback(){
-
+    function compose_clear_cache_callback()
+    {
 	global $wp_filesystem;
 	if( $wp_filesystem->method == 'direct' ){
 	    $wp_filesystem->delete( ABSPATH . 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache', true);
@@ -335,12 +343,14 @@ class chimpexpress
 	return;
     }
 	
-    function compose_gotoStep_callback() {
+    function compose_gotoStep_callback()
+    {
 	include( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'compose.php' );
 	exit;
     }
 	
-    function compose_removeDraft_callback() {
+    function compose_removeDraft_callback()
+    {
 	$cid = $_POST['cid'];
 	$this->MCAPI->campaignDelete($cid);
 
@@ -359,8 +369,8 @@ class chimpexpress
 	exit;
     }
 
-    function sanitize_callback(){
-
+    function sanitize_callback()
+    {
 	$string = explode('*|@|*', $_POST['string'] );
 	foreach( $string as $s ){
 	    if( sanitize_title( $s ) == '' ){
@@ -372,8 +382,8 @@ class chimpexpress
 	exit;
     }
 	
-    function import_callback() {
-		
+    function import_callback()
+    {
 	global $wpdb, $current_user;
 	$type = $_POST['type'];
 	$cid  = $_POST['cid'];
@@ -584,7 +594,8 @@ class chimpexpress
 	exit;
     }
 
-    function load_campaigns_callback(){
+    function load_campaigns_callback()
+    {
 	$page = ( is_numeric($_POST['nextPage']) ) ? $_POST['nextPage'] : 1;
 
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-MCAPI.php' );
@@ -612,7 +623,8 @@ class chimpexpress
 	exit;
     }
 
-    function archive_deleteLP_callback(){
+    function archive_deleteLP_callback()
+    {
 	global $wp_filesystem;
 	if( $wp_filesystem->method != 'direct' ){
 	    $ftpstream = @ftp_connect( $this->_settings['ftpHost'] );
@@ -633,7 +645,8 @@ class chimpexpress
 	return;
     }
 	
-    function rrmdir($dir) {
+    function rrmdir($dir)
+    {
 	if (is_dir($dir)) {
 	    $objects = scandir($dir);
 	    foreach ($objects as $object) {
@@ -646,7 +659,8 @@ class chimpexpress
 	}
     }
 	
-    function ftp_delAll($ftpstream, $dst_dir){
+    function ftp_delAll($ftpstream, $dst_dir)
+    {
 	$ar_files = @ftp_nlist($ftpstream, $dst_dir);
 
 	if (is_array($ar_files)){ // makes sure there are files
@@ -666,8 +680,8 @@ class chimpexpress
 	return $flag;
     }
 	
-    function ftp_find_root(){
-
+    function ftp_find_root()
+    {
 	$ftpstream = @ftp_connect( $_POST['ftpHost'] );
 	$ftplogin = @ftp_login($ftpstream, $_POST['ftpUser'], $_POST['ftpPasswd']);
 
@@ -693,8 +707,8 @@ class chimpexpress
 	exit;
     }
 	
-    function ftp_test_callback(){
-
+    function ftp_test_callback()
+    {
 	@ftp_close($ftpstream);
 	$ftpstream = ftp_connect( $_POST['ftpHost'] );
 	$ftplogin = @ftp_login($ftpstream, $_POST['ftpUser'], $_POST['ftpPasswd']);
@@ -713,14 +727,17 @@ class chimpexpress
 	exit;
     }
 
-    public function main(){
+    public function main()
+    {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'main.php' );
     }
-    function compose(){
+
+    function compose()
+    {
 	global $wp_filesystem;
 	$handler = $wp_filesystem;
 	$cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
-	echo '<div class="wrap">';
+	echo '<div class="wrap" id="CEwrap">';
 	if ( ! is_dir( ABSPATH . $cacheDir ) ){
 	    if( $wp_filesystem->method == 'direct' ){
 		$wp_filesystem->mkdir( ABSPATH . $cacheDir);
@@ -749,18 +766,21 @@ class chimpexpress
 	echo '</div>';
 	@ftp_close($handler);
     }
-    function import(){
+    function import()
+    {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'import.php' );
     }
-    function archive(){
+    function archive()
+    {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'archive.php' );
     }
-    function editLP(){
+    function editLP()
+    {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'editLP.php' );
     }
 	
-    public function options() {
-?>
+    public function options()
+    { ?>
 	<style type="text/css">
 	    #wp_chimpexpress table tr th a {
 		cursor:help;
@@ -768,7 +788,7 @@ class chimpexpress
 	    .large-text{width:99%;}
 	    .regular-text{width:25em;}
 	</style>
-	<div class="wrap">
+	<div class="wrap" id="CEwrap">
 	    <div id="dashboardButton">
 	    <a class="button" id="next" href="admin.php?page=ChimpExpressDashboard" title="ChimpExpress <?php _e('Dashboard', 'chimpexpress'); ?> &raquo;">ChimpExpress <?php _e('Dashboard', 'chimpexpress'); ?> &raquo;</a>
 	    </div>
@@ -1144,25 +1164,26 @@ class chimpexpress
 	</div>
 <?php
     }
-	
-	
-	
-	
-    private function _getListenerUrl() {
+
+    private function _getListenerUrl()
+    {
 	return get_bloginfo('url').'/?'.$this->_listener_query_var.'='.urlencode($this->_settings['listener_security_key']);
     }
 	
-    public function setTimeout($seconds){
+    public function setTimeout($seconds)
+    {
 	$this->_timeout = absint($seconds);
 	return true;
     }
 	
-    public function getTimeout(){
+    public function getTimeout()
+    {
 	return $this->timeout;
     }
 	
 	
-    public static function getInstance() {
+    public static function getInstance()
+    {
 	if ( !self::$instance ) {
 	    self::$instance = new self;
 	}
@@ -1170,7 +1191,8 @@ class chimpexpress
     }
 	
     // load language files
-    function chimpexpressLoadLanguage() {
+    function chimpexpressLoadLanguage()
+    {
 	if (function_exists('load_plugin_textdomain')) {
 	    $currentlocale = get_locale();
 	    if(!empty($currentlocale)) {

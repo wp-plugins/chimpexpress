@@ -23,7 +23,7 @@ $archiveDirAbs = ABSPATH . 'archive/';
 $archiveDirRel = get_option('home') . '/archive/';
 
 ?>
-<div class="wrap">
+<div class="wrap" id="CEwrap">
 <div id="archive">
 <script type="text/javascript">
 jQuery(document).ready(function($) {

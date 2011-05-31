@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
 	});
 });
 </script>
-<div class="wrap">
+<div class="wrap" id="CEwrap">
 	<div id="loggedInStatus">
 	<?php if ( $_SESSION['MCping'] ){
 		echo sprintf(__('connected as <a href="options-general.php?page=ChimpExpressConfig">%s</a>', 'chimpexpress'), $_SESSION['MCusername']);

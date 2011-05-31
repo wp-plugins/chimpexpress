@@ -20,4 +20,4 @@
 defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
 ?>
-<div id="WMfooter"><?php _e('developed by', 'chimpexpress');?> <a href="http://www.freakedout.de" target="_blank">freakedout</a></div>
+<div id="CEfooter"><?php _e('developed by', 'chimpexpress');?> <a href="http://www.freakedout.de" target="_blank">freakedout</a></div>
