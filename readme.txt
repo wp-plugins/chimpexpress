@@ -64,6 +64,6 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 = 1.4 =
 * Removed position parameter from add_menu_page to avoid conflicts with CPT (custom post types)
 = 1.5 =
-* Fix to include css files only on plugin pages.
+* Fix to include css and js files only on ChimpExpress pages.
 * Adjusted css selectors to avoid conflicting with other plugins/widgets.
 * Fixed multiple backslashes being added to campaign content (entered in wysiwyg editor).
