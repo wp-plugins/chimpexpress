@@ -1,0 +1,351 @@
+#CEwrap {
+	padding-right: 55px;
+	padding-left: 10px;
+	margin-bottom: 1em;
+}
+#CEwrap #wp_chimpexpress th,
+#CEwrap #wp_chimpexpress td {
+	vertical-align: top;
+}
+#CEwrap #mc_ping,
+#CEwrap #mc_status {
+	position: relative;
+	top: 1px;
+}
+#CEwrap .chimpexpress_help {
+	margin: 0 10px;
+}
+
+#CEwrap .componentHeading {
+	display: inline-block;
+	background: url(../images/logo_32.png) no-repeat 0 15px;
+	padding-left: 40px !important; 
+}
+#CEwrap #loggedInStatus,
+#CEwrap #dashboardButton {
+	float: right;
+	padding: 25px 0 0;
+	font-size:0.8em;
+}
+#CEwrap #loggedInStatus a,
+#CEwrap #loggedInStatus a:hover {
+	color: #333333;
+}
+
+#CEwrap h3 {
+	color:#464646;
+	font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-size:1.5em;
+	font-style:italic;
+	font-weight:normal;
+	margin:0;
+}
+#CEwrap h4 {
+	color:#464646;
+	font-size:1.2em;
+	font-weight:normal;
+	margin:0;
+}
+#CEwrap h5 {
+	color:#464646;
+	font-size:1.2em;
+	font-weight:normal;
+	margin:0;
+}
+#CEwrap table#dashboardTable td {
+	text-align: center;
+}
+#CEwrap hr {
+	border: 1px solid #E3E3E3;
+	border-width: 1px 0 0 0;
+	color: #F1F1F1;
+}
+#CEwrap label {
+	display: inline-block;
+	font-size: 14px;
+	padding: 0 0 3px 3px;
+}
+
+#CEwrap .mainOption {
+	display: block;
+	background: #F1F1F1;
+	border: 1px solid #E3E3E3;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	
+	width: 300px;
+	height: 175px;
+	padding: 10px 20px;
+	margin:  50px 0 0 0;
+}
+#CEwrap .mainOption h3 {
+	margin: 10px 0;
+}
+#CEwrap .mainOption hr {
+	border-color: #BFBFBF;
+}
+#CEwrap .mainOption .mainText {
+	height: 60px;
+	margin: 25px 0 0;
+}
+#CEwrap .mainOption .button-primary {
+	padding: 0px 25px 3px 25px;
+	text-align: center;
+}
+
+.clr {
+	clear: both;
+}
+
+#CEwrap #preloaderContainer {
+	width: 100%;
+	height: 75px;
+	text-align: center;
+}
+#CEwrap #preloaderContainer #preloader {
+    background: url("../images/loader_32.gif") no-repeat scroll left 0 transparent;
+    display: block;
+    height: 32px;
+    margin: 50px auto;
+    padding: 6px 0 0 45px;
+    text-align: left;
+    vertical-align: middle;
+    width: 400px;
+}
+
+
+#CEwrap #tName {
+	width: 100%;
+	text-align: center;
+}
+#CEwrap #stepsContainer {
+	margin:auto auto 15px;
+	text-align:center;
+	width:100%;
+	min-height: 100px;
+}
+#CEwrap #stepsTemplateSections {
+	display: inline;
+}
+#CEwrap .prevNext {
+	display:inline-block;
+	width: 21px;
+	height: 22px;
+	position:relative;
+	top:-12px;
+	margin: 0 10px;
+	opacity: 0.6;
+	cursor: pointer;
+}
+#CEwrap .prevNext a {
+	display:inline-block;
+	text-indent: -5000px;
+	width: 21px;
+	height: 22px;
+	cursor: pointer;
+}
+#CEwrap #prevStep {
+	background: url(../images/arrow-left.gif) no-repeat 0 0;
+}
+#CEwrap #nextStep {
+	background: url(../images/arrow-right.gif) no-repeat 0 0;
+}
+#CEwrap #next,
+#CEwrap .next {
+	margin-right: 20px;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+#CEwrap .step {
+	margin-right: 0;
+	text-align:center;
+	display:inline-block;
+	position: relative;
+	top: 28px;
+	height: 75px;
+}
+#CEwrap .step a,
+#CEwrap .step a:hover,
+#CEwrap .step a:active,
+#CEwrap .step a:focus {
+	color:#FFFFFF;
+	text-decoration:none;
+	display:inline-block;
+	width: 40px;
+	height:30px;
+	padding:10px 0 0;
+	position:relative;
+	top: -10px;
+}
+#CEwrap .activeStep a {
+	background:none repeat scroll 0 0 #8F8F8F;
+	border: 0px solid #8F8F8F;
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px
+	padding:10px 0 0;
+}
+#CEwrap .inactiveStep a {
+	background:none repeat scroll 0 0 #BFBFBF;
+	border: 0px solid #BFBFBF;
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px
+	padding:10px 0 0;
+}
+
+
+
+#CEwrap .stepSubTitle {
+	font-size: 11px;
+	font-weight: normal;
+	text-transform: capitalize;
+}
+#CEwrap .activeStep .stepSubTitle {
+	color: #333333;
+}
+#CEwrap .inactiveStep .stepSubTitle {
+	color: #7F7F7F;
+}
+#CEwrap .bgLine {
+	background:none repeat scroll 0 0 #CFCFCF;
+	display:inline-block;
+	height:2px;
+	margin:0 -20px;
+	position: relative;
+	top:-15px;
+	width:100px;
+	z-index:-1;
+}
+
+#CEwrap #ajaxLoader {
+	margin:auto auto 10px;
+	text-align:center;
+	width:500px;
+}
+
+#CEwrap #template,
+#CEwrap #listId,
+#CEwrap #cid {
+	min-width: 300px;
+	margin-right: 20px;
+}
+#CEwrap #preview {
+	margin-right: 20px;
+}
+
+#CEwrap #monkey-ruler {
+    background: url(../images/ruler-centered.png) no-repeat scroll center bottom transparent;
+    height: 58px;
+    position: relative;
+    width: 100.2%;
+}
+#CEwrap #monkey-ruler p {
+    background: url(../images/ruler-arm.png) repeat scroll right top transparent;
+    display: block;
+    height: 30px;
+    margin: 0;
+    padding: 16px 0 0;
+    text-align: center;
+}
+#CEwrap #monkeyhead.scream {
+    background-position: right center;
+}
+#CEwrap #monkeyhead {
+    background: url(../images/ruler-head.png) repeat scroll 0 0 transparent;
+    display: block;
+    height: 46px;
+    left: 0;
+    position: absolute;
+    text-indent: -9999px;
+    top: 0;
+    width: 60px;
+}
+
+#CEwrap #chimpexpressCompose input.inputWide {
+	width: 100%;
+}
+
+#CEwrap #sectionTitleWrapper {
+	color:#464646;
+	font-size:1.5em;
+	font-weight:normal;
+	margin: 0 0 0.5em 0;
+}
+#CEwrap .sectionTitle {
+	text-transform: capitalize;
+}
+#CEwrap .grey {
+	color: #7F7F7F !important;
+}
+#CEwrap .bold {
+	font-weight: bold;
+}
+
+
+#CEwrap .postarea #editor-toolbar {
+    height: 30px;
+}
+#CEwrap .postarea #edButtonPreview,
+#CEwrap .postarea #edButtonHTML {
+	background-color:#f1f1f1;
+	border-color:#dfdfdf;
+	color:#999;
+}
+.postarea #editor-toolbar .active {
+    background-color: #E9E9E9;
+    border-bottom-color: #E9E9E9;
+    color: #333333;
+}
+#CEwrap .postarea #editorcontainer textarea {
+	margin: 0;
+	width: 100%;
+}
+
+
+#CEwrap #insertPost {
+	margin: 1em 0 3em 0;
+}
+#CEwrap #posts {
+	min-width: 250px;
+}
+
+#CEwrap .ul {
+	list-style-type: disc;
+	padding: 0 0 0 40px;
+	margin: 0 0 2em;
+}
+#CEwrap .ul li {
+	padding: 5px 0;
+}
+
+#CEwrap #gotoArchive {
+	float: right;
+}
+
+#CEwrap #archive thead {
+	line-height: 1.5em;
+	font-size: 2em;
+	font-weight: bold;
+}
+#CEwrap #archive tbody {
+	line-height: 2em;
+}
+
+
+#CEwrap #CEfooter {
+	width: 100%;
+	text-align: right;
+	margin-top: 5em;
+	color: #BFBFBF;
+}
+#CEwrap #CEfooter a {
+	color: #BFBFBF;
+}
