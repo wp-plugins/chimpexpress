@@ -8,19 +8,19 @@
  * Author URI: http://www.freakedout.de
  * License: GNU/GPL 2
  * Copyright (C) 2011  freakedout (www.freakedout.de)
- *  
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as 
+ * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/> 
- * or write to the Free Software Foundation, Inc., 51 Franklin St, 
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * or write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA  02110-1301  USA
 **/
 
@@ -49,7 +49,7 @@ class chimpexpress
     private $MCAPI = false;
 
 //  public $_api = false;
-	
+
     function __construct()
     {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'class-MCAPI.php' );
@@ -66,7 +66,7 @@ class chimpexpress
 	}
 
 	$this->_getSettings();
-		
+
 	// Get the datacenter from the API key
 	$datacenter = substr( strrchr($this->_settings['apikey'], '-'), 1 );
 	if ( empty( $datacenter ) ) {
@@ -97,7 +97,7 @@ class chimpexpress
 	add_filter( 'pre_update_option_' . $this->_optionsName, array( $this, 'optionUpdate' ), null, 2 );
 //	add_action( 'admin_notices', array($this->MCAPI, 'showMessages') );
 
-	
+
 	// compose ajax callbacks
 	add_action('wp_ajax_compose_clear_cache', array($this,'compose_clear_cache_callback'));
 	add_action('wp_ajax_compose_gotoStep', array($this,'compose_gotoStep_callback'));
@@ -112,27 +112,9 @@ class chimpexpress
 
 	add_action('wp_ajax_ftp_find_root', array($this,'ftp_find_root'));
 	add_action('wp_ajax_ftp_test', array($this,'ftp_test_callback'));
-
-//	add_filter('admin_head', array($this,'ShowTinyMCE'));
     }
 
-    function ShowTinyMCE()
-    {
-	// conditions here
-	wp_enqueue_script( 'common' );
-	wp_enqueue_script( 'jquery-color' );
-	wp_print_scripts('editor');
-	if (function_exists('add_thickbox')) add_thickbox();
-	wp_print_scripts('media-upload');
-	if (function_exists('wp_tiny_mce')) wp_tiny_mce();
-	wp_admin_css();
-	wp_enqueue_script('utils');
-	do_action("admin_print_styles-post-php");
-	do_action('admin_print_styles');
-    }
-	
-    public function optionUpdate( $newvalue, $oldvalue )
-    {
+    public function optionUpdate($newvalue, $oldvalue) {
 	if ( !empty( $_POST['get-apikey'] ) ) {
 	    unset( $_POST['get-apikey'] );
 
@@ -151,7 +133,7 @@ class chimpexpress
 	    // Get API keys, if one doesn't exist, the login will create one
 	    $keys = $this->MCAPI->apikeys();
     //	var_dump($keys);die;
-			
+
 	    // Set the API key
 	    if ( is_array($keys) && !empty( $keys ) && !is_wp_error($keys) ) {
 		$newvalue['apikey'] = $keys[0]['apikey'];
@@ -203,11 +185,11 @@ class chimpexpress
 
 	return $newvalue;
     }
-	
+
     public function activatePlugin() {
 	$this->_updateSettings();
     }
-	
+
     public function getSetting( $settingName, $default = false ) {
 	if ( empty( $this->_settings ) ) {
 	    $this->_getSettings();
@@ -218,7 +200,7 @@ class chimpexpress
 	    return $default;
 	}
     }
-	
+
     public function _getSettings() {
 	if (empty($this->_settings)) {
 		$this->_settings = get_option( $this->_optionsName );
@@ -243,15 +225,15 @@ class chimpexpress
 	);
 	$this->_settings = wp_parse_args($this->_settings, $defaults);
     }
-	
+
     private function _generateSecurityKey() {
 	return sha1(time());
     }
-	
+
     private function _updateSettings() {
 	update_option( $this->_optionsName, $this->_settings );
     }
-	
+
     public function registerOptions() {
 	register_setting( $this->_optionsGroup, $this->_optionsName );
     }
@@ -266,7 +248,7 @@ class chimpexpress
 				    array($this, 'main'),
 				    plugins_url( 'images' . DS . 'logo_16.png', __FILE__ )
 				);
-	
+
 	$pages[] = add_submenu_page(	'ChimpExpressDashboard',
 					__('Import', 'chimpexpress'),
 					__('Import', 'chimpexpress'),
@@ -342,13 +324,13 @@ class chimpexpress
 
 	return;
     }
-	
+
     function compose_gotoStep_callback()
     {
 	include( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'compose.php' );
 	exit;
     }
-	
+
     function compose_removeDraft_callback()
     {
 	$cid = $_POST['cid'];
@@ -381,7 +363,7 @@ class chimpexpress
 	echo 1;
 	exit;
     }
-	
+
     function import_callback()
     {
 	global $wpdb, $current_user;
@@ -644,7 +626,7 @@ class chimpexpress
 	}
 	return;
     }
-	
+
     function rrmdir($dir)
     {
 	if (is_dir($dir)) {
@@ -658,7 +640,7 @@ class chimpexpress
 	    rmdir($dir);
 	}
     }
-	
+
     function ftp_delAll($ftpstream, $dst_dir)
     {
 	$ar_files = @ftp_nlist($ftpstream, $dst_dir);
@@ -679,7 +661,7 @@ class chimpexpress
 
 	return $flag;
     }
-	
+
     function ftp_find_root()
     {
 	$ftpstream = @ftp_connect( $_POST['ftpHost'] );
@@ -706,7 +688,7 @@ class chimpexpress
 	@ftp_close($ftpstream);
 	exit;
     }
-	
+
     function ftp_test_callback()
     {
 	@ftp_close($ftpstream);
@@ -757,7 +739,7 @@ class chimpexpress
 
 	$useFTP = ($wp_filesystem->method == 'direct') ? false : true;
 	$cache = new chimpexpressJG_Cache( $cacheDir, $useFTP, $handler );
-		
+
 	$templates = $cache->get('templates');
 	if ($templates === FALSE){
 	    echo '<div id="preloaderContainer"><div id="preloader">'.__('Retrieving templates and lists ...', 'chimpexpress').'</div></div>';
@@ -778,7 +760,7 @@ class chimpexpress
     {
 	require_once( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'editLP.php' );
     }
-	
+
     public function options()
     { ?>
 	<style type="text/css">
@@ -986,7 +968,7 @@ class chimpexpress
 			</td>
 		    </tr>
 		    */ ?>
-					
+
 		    <?php if ( $this->MCAPI->ping() ){ ?>
 		    <tr valign="top">
 			<th scope="row">
@@ -1040,7 +1022,7 @@ class chimpexpress
 			<td></td>
 			<td></td>
 		    </tr>
-					
+
 		    <tr valign="top">
 			<th scope="row">
 			    <label><?php _e('FTP Host', 'chimpexpress'); ?></label>
@@ -1169,19 +1151,19 @@ class chimpexpress
     {
 	return get_bloginfo('url').'/?'.$this->_listener_query_var.'='.urlencode($this->_settings['listener_security_key']);
     }
-	
+
     public function setTimeout($seconds)
     {
 	$this->_timeout = absint($seconds);
 	return true;
     }
-	
+
     public function getTimeout()
     {
 	return $this->timeout;
     }
-	
-	
+
+
     public static function getInstance()
     {
 	if ( !self::$instance ) {
@@ -1189,7 +1171,7 @@ class chimpexpress
 	}
 	return self::$instance;
     }
-	
+
     // load language files
     function chimpexpressLoadLanguage()
     {
@@ -1262,10 +1244,10 @@ class chimpexpress
 		}';
 	echo '</script>';
 	echo '</div>';
-	
+
 	return;
     }
-	
+
 }
 
 $chimpexpress = chimpexpress::getInstance();

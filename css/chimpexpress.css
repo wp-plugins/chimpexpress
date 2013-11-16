@@ -19,7 +19,7 @@
 #CEwrap .componentHeading {
 	display: inline-block;
 	background: url(../images/logo_32.png) no-repeat 0 15px;
-	padding-left: 40px !important; 
+	padding-left: 40px !important;
 }
 #CEwrap #loggedInStatus,
 #CEwrap #dashboardButton {
@@ -73,7 +73,7 @@
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
-	
+
 	width: 300px;
 	height: 175px;
 	padding: 10px 20px;
@@ -226,9 +226,22 @@
 }
 
 #CEwrap #ajaxLoader {
-	margin:auto auto 10px;
-	text-align:center;
-	width:500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 1000;
+    display: none;
+
+    opacity: 0.75;
+    opacity: 0.75;
+    -webkit-opacity: 0.75;
+    -moz-opacity: 0.75;
+    filter: alpha(opacity=75);
 }
 
 #CEwrap #template,
