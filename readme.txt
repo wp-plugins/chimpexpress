@@ -2,9 +2,9 @@
 Contributors: freakedout
 Donate link: http://www.chimpexpress.com
 Tags: mailchimp, newsletter
-Requires at least: 3.3
+Requires at least: 3
 Tested up to: 3.7.1
-Stable tag: 1.6
+Stable tag: 1.6.1
 
 ChimpExpress - The MailChimp WordPress Integration
 
@@ -73,3 +73,5 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 * Bugfix: fixed issue when editor wasn't working properly
 * Bugfix: fixed several Javascript errors
 * Minor updates on the user interface
+= 1.6.1 * 
+* Fixed a bug which caused the landing page editor to be empty in some cases

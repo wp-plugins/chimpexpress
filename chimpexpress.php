@@ -3,11 +3,11 @@
  * Plugin Name: ChimpExpress
  * Plugin URI: http://www.chimpexpress.com
  * Description: Wordpress MailChimp Integration - Create MailChimp campaign drafts from within Wordpress and include blog posts or import recent campaigns into Wordpress to create blog posts or landing pages. Requires PHP5. If you're having trouble with the plugin visit our forums http://www.chimpexpress.com/support.html Thank you!
- * Version: 1.6
+ * Version: 1.6.1
  * Author: freakedout
  * Author URI: http://www.freakedout.de
  * License: GNU/GPL 2
- * Copyright (C) 2011  freakedout (www.freakedout.de)
+ * Copyright (C) 2013  freakedout (www.freakedout.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -489,19 +489,19 @@ class chimpexpress
 	    $safeSubject = sanitize_title( $fileName );
 	    // throw error if page title is empty or consists only of special characters
 	    if( $safeSubject == '' ){
-		$result['error'] = 1;
-		$result['msg'] = '<span style="color: #ff0000;">'.__('Page title must not be empty or consist exclusively of special characters!', 'chimpexpress').'</span>';
-		header("Content-type: application/json");
-		echo json_encode( $result );
-		exit;
+		    $result['error'] = 1;
+		    $result['msg'] = '<span style="color: #ff0000;">'.__('Page title must not be empty or consist exclusively of special characters!', 'chimpexpress').'</span>';
+		    header("Content-type: application/json");
+		    echo json_encode( $result );
+		    exit;
 	    }
 
 	    if( !$_POST['force'] && file_exists( ABSPATH . 'archive' .DS. $safeSubject . '.html' ) ){
-		$result['error'] = 1;
-		$result['msg'] = '<span style="color: #ff0000;">'.__('A landing page with the supplied name already exists!', 'chimpexpress').'<br /><a href="javascript:jQuery(\'#force\').val(1);jQuery(\'#next\').trigger(\'click\');void(0)">'.__('Click here to overwrite the existing landing page', 'chimpexpress').'</a></span>';
-		header("Content-type: application/json");
-		echo json_encode( $result );
-		exit;
+		    $result['error'] = 1;
+		    $result['msg'] = '<span style="color: #ff0000;">'.__('A landing page with the supplied name already exists!', 'chimpexpress').'<br /><a href="javascript:jQuery(\'#force\').val(1);jQuery(\'#next\').trigger(\'click\');void(0)">'.__('Click here to overwrite the existing landing page', 'chimpexpress').'</a></span>';
+		    header("Content-type: application/json");
+		    echo json_encode( $result );
+		    exit;
 	    }
 
 	    // create permalink

@@ -1,18 +1,18 @@
 <?php
 /**
- * Copyright (C) 2011  freakedout (www.freakedout.de)
+ * Copyright (C) 2013  freakedout (www.freakedout.de)
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as 
+ * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/> 
- * or write to the Free Software Foundation, Inc., 51 Franklin St, 
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * or write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA  02110-1301  USA
 **/
 
@@ -20,7 +20,7 @@
 defined( 'ABSPATH' ) or die( 'Restricted Access' );
 
 if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
-	
+
 	$content = $_POST['head'] . $_POST['LPcontent'] . '</body></html>';
 	$content = str_replace( array('\"', "\'"), array('"', "'"), $content);
 
@@ -39,11 +39,11 @@ if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
 	    @ftp_fput($ftpstream, 'archive' .DS. $_POST['lpid'], $temp, FTP_ASCII);
 	    @ftp_close($ftpstream);
 	}
-	
+
 	echo '<script type="text/javascript">window.location = "'.get_option('home') . '/wp-admin/admin.php?page=ChimpExpressArchive";</script>';
-	
+
 } else {
-	
+
 	add_action('admin_init', 'editor_admin_init');
 	add_action('admin_head', 'editor_admin_head');
 	wp_enqueue_script( 'common' );
@@ -99,7 +99,7 @@ if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
 	}
 	?>
 	<div style="display:block;height:3em;"></div>
-	
+
 	<link media="all" type="text/css" href="<?php echo get_option('home');?>/wp-admin/css/colors-fresh.css" id="colors-css" rel="stylesheet">
 	<h3><?php _e('Edit Landing Page', 'chimpexpress');?></h3>
 	<hr />
@@ -116,19 +116,19 @@ if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
 	<?php
 	$archiveDirAbs = ABSPATH . 'archive/';
 	if( is_file(  $archiveDirAbs . $filename ) ){
-		$f = @fopen( $archiveDirAbs . $filename, 'r' );
-		$content = fread( $f, filesize( $archiveDirAbs . $filename ) );
-		@fclose( $f );
-		
-		preg_match('#.*<body[^>]*>#is', $content, $head);
-		$head = (isset($head[0])) ? str_replace('"',"'",$head[0]) : '';
-		preg_match( '!<body[^>]*>(.*)</body>!is' , $content, $body );
+        $content = file_get_contents($archiveDirAbs . $filename);
+        preg_match('#.*<body[^>]*>#is', $content, $head);
+
+        $head = (isset($head[0])) ? str_replace('"',"'",$head[0]) : '';
+        preg_match('%<body[^>]*>(.*?)</body>%s', $content, $body);
+
 		$bodyContent = $body[0];
-		$bodyContent = preg_replace( '!<body[^>]*>!is', '', $bodyContent);
-		$bodyContent = preg_replace( '!</body>!is', '', $bodyContent);
-		$bodyContent = preg_replace( '!<style>(.*)</style>!is', '', $bodyContent);
-		?>
-		<div style="float:right;">
+		$bodyContent = preg_replace('/<body[^>]*>/', '', $bodyContent);
+		$bodyContent = preg_replace('%</body>%', '', $bodyContent);
+		$bodyContent = preg_replace('%<style[^>]*>(.*?)</style>%s', '', $bodyContent);
+	?>
+
+	<div style="float:right;">
 		<a href="javascript:document.forms['wp_chimpexpress'].submit()" class="button">&nbsp;<?php _e('Save', 'chimpexpress');?>&nbsp;</a>
 		<a href="javascript:cancelEdit()" class="button"><?php _e('Cancel', 'chimpexpress');?></a>
 		<script type="text/javascript">
@@ -143,16 +143,17 @@ if( isset($_POST['task']) && $_POST['task'] == 'saveLP' ){
 		<br />
 		<form action="admin.php?page=ChimpExpressEditLandingPage" method="post" id="wp_chimpexpress">
 		<div id="poststuff" class="postarea">
+
 		<?php
-		the_editor($bodyContent, $id = 'LPcontent', $prev_id = '', $media_buttons = true, $tab_index = 1);
+		    wp_editor($bodyContent, $id = 'LPcontent', $prev_id = '', $media_buttons = true, $tab_index = 1);
 		?>
 		<input type="hidden" name="lpid" value="<?php echo $filename;?>" />
 		<input type="hidden" name="task" value="saveLP" />
-		<input type="hidden" name="head" value="<?php echo $head;?>" />
+		<input type="hidden" name="head" value="<?php echo $head; ?>" />
 		</form>
 		</div>
 		<?php
-		
+
 	} else {
 		?>
 		<div style="clear:both;"></div>

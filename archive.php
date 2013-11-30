@@ -1,18 +1,18 @@
 <?php
 /**
- * Copyright (C) 2011  freakedout (www.freakedout.de)
+ * Copyright (C) 2013 freakedout (www.freakedout.de)
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as 
+ * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/> 
- * or write to the Free Software Foundation, Inc., 51 Franklin St, 
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * or write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA  02110-1301  USA
 **/
 
@@ -29,9 +29,9 @@ $archiveDirRel = get_option('home') . '/archive/';
 jQuery(document).ready(function($) {
 	jQuery("#gotoDashboard").click( function(){
 		window.location = 'admin.php?page=ChimpExpressDashboard';
-		
 	});
 });
+
 function editLP(){
 	var lpid = document.getElementsByName('lpid[]');
 	var isChecked = false;
@@ -46,6 +46,7 @@ function editLP(){
 		document.forms["wp_chimpexpress"].submit();
 	}
 }
+
 function deleteLP(){
     var lpid = document.getElementsByName('lpid[]');
     var isChecked = false;
@@ -115,7 +116,7 @@ function deleteLP(){
 	}
 	?>
 	<div style="display:block;height:3em;"></div>
-	
+
 	<h3><?php _e('Landing Page Archive', 'chimpexpress');?></h3>
 	<hr />
 	<br />
@@ -169,12 +170,12 @@ function deleteLP(){
 	<br />
 	<br />
 	</form>
-	<?php 
+	<?php
 	} else {
 	    _e('No landing pages found!', 'chimpexpress');
 	    echo '<br />';
 	} ?>
-	
+
 	<a id="gotoDashboard" class="button" style="float:right;" href="javascript:void(0);" title="<?php _e('Dashboard', 'chimpexpress');?>"><?php _e('Dashboard', 'chimpexpress');?></a>
 </div>
 <?php include( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'footer.php' ); ?>
