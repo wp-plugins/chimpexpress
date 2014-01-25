@@ -1,18 +1,18 @@
 <?php
 /**
- * Copyright (C) 2013  freakedout (www.freakedout.de)
+ * Copyright (C) 2014 freakedout (www.freakedout.de)
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as 
+ * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/> 
- * or write to the Free Software Foundation, Inc., 51 Franklin St, 
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * or write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA  02110-1301  USA
 **/
 
@@ -69,7 +69,7 @@ if ( isset($_POST['type']) ) {
 	}
 	?>
 	<div style="display:block;height:3em;"></div>
-	
+
 	<h3><?php _e('Import', 'chimpexpress');?></h3>
 	<hr />
 	<br />
@@ -85,16 +85,17 @@ jQuery(document).ready(function($) {
 		window.location = 'admin.php?page=ChimpExpressArchive';
 	});
 	*/ ?>
-	jQuery("#next").click( function( force ){
+	jQuery("#next").click(function(force) {
+        console.log('123');
 
-		if( jQuery.trim( jQuery('#fileName').val() ) == '' ){
-		    alert( '<?php _e('Please enter a page title!', 'chimpexpress');?>');
+		if (jQuery.trim( jQuery('#fileName').val() ) == '') {
+		    alert( '<?php _e('Cannot continue as campaign does not seem to have a subject yet!', 'chimpexpress');?>');
 		    return;
 		}
 		if( jQuery('#typePost').is(':checked') || jQuery('#typePage').is(':checked') ){
-			
+
 			jQuery('#cancelContainer').html( '<img src="<?php echo plugins_url( '/images/ajax-loader.gif', __FILE__ );?>" style="position: relative;top: 1px;"/>' );
-			
+
 			if ( jQuery('#typePost').is(':checked') ){
 				var type = 'post';
 			} else {
@@ -105,15 +106,17 @@ jQuery(document).ready(function($) {
 			} else {
 				var datatype = 'text';
 			}
-			var data = {action: "import",
-				    type: type,
-				    datatype: datatype,
-				    cid : jQuery('#cid').val(),
-				    title: campaigns[jQuery('#cid').val()]['title'],
-				    subject: campaigns[jQuery('#cid').val()]['subject'],
-				    fileName: htmlentities( jQuery('#fileName').val() ),
-				    force: jQuery('#force').val()
-				   };
+			var data = {
+                action: "import",
+				type: type,
+				datatype: datatype,
+				cid : jQuery('#cid').val(),
+				title: campaigns[jQuery('#cid').val()]['title'],
+				subject: campaigns[jQuery('#cid').val()]['subject'],
+				fileName: htmlentities(jQuery('#fileName').val()),
+				force: jQuery('#force').val()
+		   };
+
 			jQuery.post(ajaxurl, data, function(response) {
 			    if( response.error == 1 ){
 				jQuery('#cancelContainer').html( response.msg );
@@ -130,13 +133,17 @@ jQuery(document).ready(function($) {
 			window.location = 'admin.php?page=ChimpExpressImport';
 		}
 	});
-	
-	jQuery('#fileName').val( html_entity_decode( campaigns[jQuery('#cid').val()]['subject'] ) );
-	
+
+	jQuery('#fileName').val(
+        html_entity_decode(
+            campaigns[jQuery('#cid').val()]['subject']
+        )
+    );
+
 	jQuery('#cid').change( function(){
 		jQuery('#fileName').val( html_entity_decode( campaigns[jQuery(this).val()]['subject'] ) );
 	});
-	
+
 	if( jQuery('#typePage').is(':checked') ){
 		jQuery('#fileNameContainer').css( 'display', 'block' );
 		jQuery('#datatypeContainer').css( 'display', 'none' );
@@ -144,7 +151,7 @@ jQuery(document).ready(function($) {
 		jQuery('#fileNameContainer').css( 'display', 'none' );
 		jQuery('#datatypeContainer').css( 'display', 'block' );
 	}
-	
+
 	jQuery('#typePage').change( function(){
 		if( jQuery(this).is(':checked') ){
 			jQuery('#fileNameContainer').css( 'display', 'block' );

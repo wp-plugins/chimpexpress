@@ -3,11 +3,11 @@
  * Plugin Name: ChimpExpress
  * Plugin URI: http://www.chimpexpress.com
  * Description: Wordpress MailChimp Integration - Create MailChimp campaign drafts from within Wordpress and include blog posts or import recent campaigns into Wordpress to create blog posts or landing pages. Requires PHP5. If you're having trouble with the plugin visit our forums http://www.chimpexpress.com/support.html Thank you!
- * Version: 1.6.1
+ * Version: 1.6.2
  * Author: freakedout
  * Author URI: http://www.freakedout.de
  * License: GNU/GPL 2
- * Copyright (C) 2013  freakedout (www.freakedout.de)
+ * Copyright (C) 2014 freakedout (www.freakedout.de)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -371,8 +371,9 @@ class chimpexpress
 	$cid  = $_POST['cid'];
 	$subject  = html_entity_decode( $_POST['subject'] );
 	$fileName = html_entity_decode( $_POST['fileName'] );
-	// get next post/page id
-	$table_status = $wpdb->get_results( $wpdb->prepare("SHOW TABLE STATUS LIKE '$wpdb->posts'") );
+
+    // get next post/page id
+	$table_status = $wpdb->get_results( $wpdb->query("SHOW TABLE STATUS LIKE '$wpdb->posts'") );
 	$next_increment = $table_status[0]->Auto_increment;
 
 	if($type=='post'){
@@ -764,11 +765,13 @@ class chimpexpress
     public function options()
     { ?>
 	<style type="text/css">
-	    #wp_chimpexpress table tr th a {
+	    /*
+        #wp_chimpexpress table tr th a {
 		cursor:help;
 	    }
 	    .large-text{width:99%;}
 	    .regular-text{width:25em;}
+        */
 	</style>
 	<div class="wrap" id="CEwrap">
 	    <div id="dashboardButton">
