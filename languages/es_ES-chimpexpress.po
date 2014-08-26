@@ -1,32 +1,32 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Chimpexpress German\n"
+"Project-Id-Version: Chimpexpress Spanish\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Pete <pete@freakedout.de>\n"
-"Language-Team: freakedout.de <contact@freakedout.de>\n"
+"Last-Translator: jelena kovacevic <jecajeca260@gmail.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de_DE\n"
-"X-Generator: Poedit 1.6.7\n"
+"Language: es\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #. Text in echo
 #: chimpexpress/compose.php:437
 msgid "-- select post --"
-msgstr "-- Artikel wählen --"
+msgstr "-- seleccionar post --"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:458
 msgid "<a href=\"%s\" target=\"_blank\">Grab your API Key</a>"
-msgstr "<a href=\"%s\" target=\"_blank\">Holen Sie Ihren API Key</a>"
+msgstr "<a href=\"%s\" target=\"_blank\">Obtenga su Clave de API</a>"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:548
 msgid "<a href=\"%s\">Log into your MailChimp account</a>"
-msgstr "<a href=\"%s\">Bei MailChimp einloggen</a>"
+msgstr "<a href=\"%s\">Autentíquese en su cuenta MailChimp</a>"
 
 #. Text in echo
 #: chimpexpress/main.php:25 chimpexpress/compose.php:260
@@ -35,25 +35,24 @@ msgid ""
 "<a href=\"options-general.php?page=ChimpExpressConfig\">connect your "
 "MailChimp account</a>"
 msgstr ""
-"<a href=\"options-general.php?page=ChimpExpressConfig\">MailChimp Account "
-"verbinden</a>"
+"<a href=\"options-general.php?page=ChimpExpressConfig\">conecte su cuenta "
+"MailChimp</a>"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:604
 msgid "API Key expired"
-msgstr "API Key abgelaufen"
+msgstr "Clave API expirada"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:604
 msgid "API Key saved"
-msgstr "API Key gespeichert"
+msgstr "Clave API salvada"
 
 #. Text in echo
 #: chimpexpress/compose.php:145
 msgid "Are you sure you want to cancel? All entered content will be lost!"
 msgstr ""
-"Sind Sie sicher, dass Sie abbrechen möchten? Alle Eingaben gehen dabei "
-"verloren!"
+"¿Está seguro que desea cancelar? ¡Todo el contenido entrado se perderá!"
 
 #. Text in echo
 #: chimpexpress/compose.php:55
@@ -61,13 +60,13 @@ msgid ""
 "Are you sure you want to go back to step one? All entered content will be "
 "lost!"
 msgstr ""
-"Sind Sie sicher, dass Sie zurück zu Schritt 1 gehen möchten? Alle bisherigen "
-"Eingaben gehen dabei verloren!"
+"¿Está seguro que desea volver al paso uno? ¡Todo el contenido entrado se "
+"perderá!"
 
 #. Text in function
 #: chimpexpress/compose.php:555
 msgid "Campaign name and subject line must be supplied!"
-msgstr "Name der Kampagne und Betreffzeile müssen eingegeben werden!"
+msgstr "¡El nombre de la campaña y la línea del asunto deben ser proveídos! "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:400 chimpexpress/chimpexpress.php:419
@@ -76,17 +75,19 @@ msgstr "Name der Kampagne und Betreffzeile müssen eingegeben werden!"
 #: chimpexpress/chimpexpress.php:521 chimpexpress/chimpexpress.php:538
 #: chimpexpress/chimpexpress.php:581
 msgid "Click for Help!"
-msgstr "Hilfe"
+msgstr "¡Haga clic por Ayuda!"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:566
 msgid "Click save and you're done!"
-msgstr "Click save and you're done!"
+msgstr "¡Haga clic en salvar y estará listo!"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:557
 msgid "Click the <strong>List Tools</strong> menu option at the top."
-msgstr "Click the <strong>List Tools</strong> menu option at the top."
+msgstr ""
+"Haga clic en la opción del menú <strong>Listar Herramientas</strong> del "
+"inicio."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:554
@@ -94,24 +95,24 @@ msgid ""
 "Click the <strong>View Lists</strong> button on the list you want to "
 "configure."
 msgstr ""
-"Click the <strong>View Lists</strong> button on the list you want to "
-"configure."
+"Haga clic en el botón <strong>Ver Listas</strong> en la lista que quiera "
+"configurar."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:560
 msgid "Click the <strong>WebHooks</strong> link."
-msgstr "Click the <strong>WebHooks</strong> link."
+msgstr "Haga clic en el enlace <strong>WebHooks</strong>."
 
 #. Text in echo
 #: chimpexpress/main.php:57 chimpexpress/chimpexpress.php:604
 #: chimpexpress/compose.php:275
 msgid "Compose"
-msgstr "Neue Kampagne"
+msgstr "Componer"
 
 #. Text in echo
 #: chimpexpress/main.php:59
 msgid "Compose an email, then pass it to MailChimp for delivery."
-msgstr "Erstelle eine Kampagne und übertrage Sie zu MailChimp."
+msgstr "Componer un email, luego pasarlo a MailChimp para su entrega."
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:563
@@ -121,46 +122,46 @@ msgid ""
 "(see the <a href='%s'>MailChimp documentation for more information on events "
 "and event sources) you'd like to have sent to you."
 msgstr ""
-"Configuration should be pretty straight forward. Copy/Paste the URL shown "
-"above into the callback URL field, then select the events and event sources "
-"(see the <a href='%s'>MailChimp documentation for more information on events "
-"and event sources) you'd like to have sent to you."
+"La configuración debería ser bastante directa. Copie/Pegue la URL mostrada "
+"anteriormente en el campo de URL de callback, luego seleccione los eventos y "
+"los orígenes de evento (vea la <a href='%s'>documentación de MailChimp para "
+"más información de eventos y orígenes de eventos) que le gustaría que se le "
+"envíen."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:575
 msgid "Current MailChimp Status"
-msgstr "Aktueller MailChimp Status"
+msgstr "Estado Actual de MailChimp "
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:604
 msgid "Dashboard"
-msgstr "Arbeitsplatz"
+msgstr "Panel de Control"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:504
 msgid "Debugging E-Mail"
-msgstr "Debugging E-Mail"
+msgstr "E-Mail de Depuración"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:484
 msgid "Debugging Mode"
-msgstr "Debugging Mode"
+msgstr "Modo de Depuración"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:445
 msgid "Expire API Key"
-msgstr "Expire API Key"
+msgstr "Expirar Clave de API "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:441
 msgid "Get API Key"
-msgstr "Get API Key"
+msgstr "Obtener Clave de API"
 
 #. Text in echo
 #: chimpexpress/compose.php:527
 msgid "High fives! Your campaign is in MailChimp ready to send."
-msgstr ""
-"Herzlichen Glückwunsch! Ihre Kampagne ist in MailChimp bereit zum Senden."
+msgstr "¡Cinco estrellas! Su campaña está en MailChimp lista para enviarse."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:497
@@ -168,85 +169,85 @@ msgid ""
 "If this is on, debugging messages will be sent to the E-Mail addresses set "
 "below."
 msgstr ""
-"If this is on, debugging messages will be sent to the E-Mail addresses set "
-"below."
+"Si esto está activado, los mensajes de depuración serán enviados a las "
+"direcciones de E-Mail establecidas debajo."
 
 #. Text in echo
 #: chimpexpress/main.php:47 chimpexpress/chimpexpress.php:604
 #: chimpexpress/import.php:47
 msgid "Import"
-msgstr "Importieren"
+msgstr "Importar"
 
 #. Text in echo
 #: chimpexpress/main.php:49
 msgid "Import content from your MailChimp Account"
-msgstr "Importiere Kampagnen aus MailChimp"
+msgstr "Importar contenido desde su Cuenta de MailChimp "
 
 #. Text in echo
 #: chimpexpress/compose.php:436
 msgid "Insert content from blog post"
-msgstr "Inhalte aus Blog Artikeln einfügen."
+msgstr "Insertar contenido del post del blog"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:434
 msgid "MailChimp API Key"
-msgstr "MailChimp API Key"
+msgstr "Clave de API de MailChimp "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:468
 msgid "MailChimp API version"
-msgstr "MailChimp API Version"
+msgstr "Versión de API de MailChimp "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:414
 msgid "MailChimp Password"
-msgstr "MailChimp Password"
+msgstr "Contraseña de MailChimp "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:395
 msgid "MailChimp Username"
-msgstr "MailChimp Username"
+msgstr "Nombre de Usuario de MailChimp "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:520
 msgid "MailChimp WebHook Listener Security Key"
-msgstr "MailChimp WebHook Listener Security Key"
+msgstr "Clave de Seguridad del MailChimp WebHook Listener"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:537
 msgid "MailChimp WebHook Listener URL"
-msgstr "MailChimp WebHook Listener URL"
+msgstr "URL del MailChimp WebHook Listener"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:551
 msgid "Navigate to your <strong>Lists</strong>"
-msgstr "Navigate to your <strong>Lists</strong>"
+msgstr "Navegue a sus <strong>Listas</strong>"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:495
 msgid "Off"
-msgstr "Off"
+msgstr "Apagado"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:491
 msgid "On"
-msgstr "On"
+msgstr "Encendido"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:493
 msgid "Partial - Only WebHook Messages"
-msgstr "Partial - Only WebHook Messages"
+msgstr "Parcial - Solo Mensajes de WebHook "
 
 #. Text in echo
 #: chimpexpress/main.php:35 chimpexpress/compose.php:270
 #: chimpexpress/import.php:42
 msgid "Please connect your MailChimp account!"
-msgstr "Bitte stellen Sie die Verbindung zu Ihrem MailChimp Account her!"
+msgstr "¡Por favor conecte su cuenta de MailChimp!"
 
 #. Text in echo
 #: chimpexpress/compose.php:535
 msgid "Preview"
-msgstr "Vorschau"
+msgstr "Vista Previa"
 
 #. Text in echo
 #: chimpexpress/main.php:40
@@ -254,32 +255,32 @@ msgid ""
 "Pull content from MailChimp email campaigns into Wordpress or compose an "
 "email campaign in Wordpress, then pass it to MailChimp."
 msgstr ""
-"Importieren Sie bestehende MailChimp Kampagnen in Ihren Wordpress Blog oder "
-"erstellen Sie  eine neue Kampagne in die Sie Wordpress Artikel einfügen."
+"Extraer contenido de las campañas de email de MailChimp en WordPress o "
+"componer una campaña de email en Wordpress, luego pasarlo a MailChimp."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:528
 msgid "Regenerate Security Key"
-msgstr "Regenerate Security Key"
+msgstr "Regenerar Clave de Seguridad"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:604 chimpexpress/chimpexpress.php:386
 msgid "Settings"
-msgstr "Einstellungen"
+msgstr "Ajustes"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:604
 msgid "settings"
-msgstr "Einstellungen"
+msgstr "ajustes"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:584
 msgid "The current status of your server's connection to MailChimp"
-msgstr "Der aktuelle Status Ihrer Serververbindung zu MailChimp."
+msgstr "El estado actual de la conexión de su servidor a MailChimp"
 
 #. Text in echo
 msgid "Not connected"
-msgstr "Nicht verbunden"
+msgstr "No conectado"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:513
@@ -287,8 +288,8 @@ msgid ""
 "This is a comma separated list of E-Mail addresses that will receive the "
 "debug messages."
 msgstr ""
-"This is a comma separated list of E-Mail addresses that will receive the "
-"debug messages."
+"Esto es una lista separada por coma de las direcciones de E-Mail que "
+"recibirán los mensajes de depuración."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:530
@@ -297,19 +298,19 @@ msgid ""
 "was randomly generated for you is fine, but you can make this whatever you "
 "want."
 msgstr ""
-"This is used to make the listener a little more secure. Usually the key that "
-"was randomly generated for you is fine, but you can make this whatever you "
-"want."
+"Esto es usado para hacer el listener un poco más seguro. Usualmente la clave "
+"que fue generada aleatoriamente para usted está ok, pero usted puede hacer "
+"esto cuando quiera."
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:545
 msgid "To set this in your MailChimp account:"
-msgstr "To set this in your MailChimp account:"
+msgstr "Para establecer esto en su cuenta de MailChimp:"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:592
 msgid "Update Settings &raquo;"
-msgstr "Einstellungen speichern &raquo;"
+msgstr "Actualizar Ajustes &raquo; "
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:531
@@ -317,13 +318,13 @@ msgid ""
 "Warning: Changing this will change your WebHook Listener URL below and you "
 "will need to update it in your MailChimp account!"
 msgstr ""
-"Warning: Changing this will change your WebHook Listener URL below and you "
-"will need to update it in your MailChimp account!"
+"¡Advertencia: Cambiar esto modificará su URL del Listener de WebHook debajo "
+"y usted necesitará actualizarlo en su cuenta de MailChimp!"
 
 #. Text in echo
 #: chimpexpress/compose.php:528
 msgid "What do I do now?"
-msgstr "Was jetzt?"
+msgstr "¿Qué debo hacer ahora?"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:604
@@ -333,7 +334,7 @@ msgstr "Worpmailer"
 #. Text in function
 #: chimpexpress/chimpexpress.php:604
 msgid "Worpmailer Config"
-msgstr "Worpmailer Konfig"
+msgstr "Configuración de Worpmailer"
 
 #. Text in function
 #: chimpexpress/chimpexpress.php:455
@@ -341,9 +342,8 @@ msgid ""
 "You need a MailChimp account. If you do not have one, <a href=\"%s\" target="
 "\"_blank\">sign up for free</a>"
 msgstr ""
-"Sie benötigen ein MailChimp Account. Sollten Sie noch nicht angemeldet sein "
-"erstellen Sie hier Ihr <a href=\"%s\" target=\"_blank\">kostenloses Account "
-"</a>"
+"Usted necesita una cuenta de MailChimp. Si no tiene una, <a href=\"%s\" "
+"target=\"_blank\">regístrese de gratis</a>"
 
 #. Text in echo
 #: chimpexpress/chimpexpress.php:582 chimpexpress/chimpexpress.php:522
@@ -354,27 +354,27 @@ msgstr "[?]"
 #. Text in echo
 #: chimpexpress/compose.php:367
 msgid "active subscribers"
-msgstr "aktive Empfänger"
+msgstr "suscriptores activos"
 
 #. Text in echo
 #: chimpexpress/import.php:114
 msgid "blog post"
-msgstr "Artikel"
+msgstr "post de blog"
 
 #. Text in echo
 #: chimpexpress/compose.php:371
 msgid "campaign name"
-msgstr "Kampagnenname"
+msgstr "nombre de campaña"
 
 #. Text in echo
 #: chimpexpress/compose.php:464 chimpexpress/import.php:123
 msgid "cancel"
-msgstr "abbrechen"
+msgstr "cancelar"
 
 #. Text in echo
 #: chimpexpress/compose.php:534
 msgid "cancel (and remove draft from MailChimp)"
-msgstr "abbrechen (und Entwurf aus MailChimp entfernen)"
+msgstr "cancelar (y remover borrador de MailChimp)"
 
 #. Text in function
 #: chimpexpress/main.php:25 chimpexpress/compose.php:260
@@ -382,188 +382,188 @@ msgstr "abbrechen (und Entwurf aus MailChimp entfernen)"
 msgid ""
 "connected as <a href=\"options-general.php?page=ChimpExpressConfig\">%s</a>"
 msgstr ""
-"verbunden als <a href=\"options-general.php?page=ChimpExpressConfig\">%s</a>"
+"conectado como <a href=\"options-general.php?page=ChimpExpressConfig\">%s</a>"
 
 #. Text in echo
 msgid "Connected as"
-msgstr "Verbunden als"
+msgstr "Conectado como "
 
 #. Text in echo
 #: chimpexpress/compose.php:404
 msgid "content section"
-msgstr "Bereich"
+msgstr "sección de contenido"
 
 #. Text in echo
 #: chimpexpress/import.php:113
 msgid "create a new ..."
-msgstr "erstelle ..."
+msgstr "crear un nuevo..."
 
 #. Text in echo
 #: chimpexpress/compose.php:350
 msgid "editable areas"
-msgstr "editierbare Bereiche"
+msgstr "áreas editables"
 
 #. Text in function
 #: chimpexpress/class-MCAPI.php:1
 msgid "error code"
-msgstr "Fehlercode"
+msgstr "código de error"
 
 #. Text in echo
 #: chimpexpress/main.php:61
 msgid "go"
-msgstr "los"
+msgstr "ir"
 
 #. Text in echo
 #: chimpexpress/compose.php:208 chimpexpress/compose.php:288
 msgid "go to step"
-msgstr "gehe zu Schritt"
+msgstr "ir a dormir"
 
 #. Text in echo
 #: chimpexpress/compose.php:530
 msgid "login to MailChimp"
-msgstr "bei MailChimp einloggen"
+msgstr "autenticarse en MailChimp"
 
 #. Text in echo
 #: chimpexpress/compose.php:463 chimpexpress/import.php:121
 msgid "next &raquo;"
-msgstr "weiter &raquo;"
+msgstr "próximo &raquo;"
 
 #. Text in echo
 #: chimpexpress/compose.php:295
 msgid "next step"
-msgstr "nächster Schritt"
+msgstr "próximo paso"
 
 #. Text in echo
 #: chimpexpress/compose.php:533
 msgid "open MailChimp"
-msgstr "MailChimp aufrufen"
+msgstr "abrir MailChimp"
 
 #. Text in function
 #: chimpexpress/compose.php:531
 msgid "open the campaign \"%s\" and click \"send now\""
-msgstr "Öffnen Sie die Kampagne \"%s\" und klicken auf \"send now\""
+msgstr "abrir la campaña \"%s\" y hacer clic en \"enviar ahora\""
 
 #. Text in echo
 #: chimpexpress/import.php:116
 msgid "landing page"
-msgstr "Zielseite"
+msgstr "página de destino"
 
 #. Text in echo
 #: chimpexpress/compose.php:349
 msgid "preview"
-msgstr "Vorschau"
+msgstr "vista previa"
 
 #. Text in echo
 #: chimpexpress/compose.php:284
 msgid "previous step"
-msgstr "vorheriger Schritt"
+msgstr "paso anterior"
 
 #. Text in echo
 #: chimpexpress/compose.php:354
 msgid "select a subscriber list"
-msgstr "Empfängerliste"
+msgstr "seleccionar una lista de suscriptor"
 
 #. Text in echo
 #: chimpexpress/compose.php:327
 msgid "select an email template"
-msgstr "Email Template"
+msgstr "seleccionar una plantilla de email"
 
 #. Text in echo
 msgid "Please enter a page title!"
-msgstr "Bitte geben Sie den Seitentitel ein!"
+msgstr "¡Por favor entre un título de página!"
 
 #. Text in echo
 msgid ""
 "Page title must not be empty or consist exclusively of special characters!"
 msgstr ""
-"Der Seitentitel darf nicht leer sein oder ausschließlich aus Sonderzeichen "
-"bestehen!"
+"¡El título de la página no debe ser vacío o consiste exclusivamente en "
+"caracteres especiales!"
 
 #. Text in echo
 msgid ""
 "Campaign name and subject can not consist exclusively of special characters!"
 msgstr ""
-"Kampagnenname und Betreffzeile dürfen nicht ausschließlich aus Sonderzeichen "
-"bestehen!"
+"¡El nombre de la campaña y el asunto pueden solo consistir en caracteres "
+"especiales!"
 
 #. Text in echo
 msgid "A landing page with the supplied name already exists!"
-msgstr "Es existiert bereits eine Zielseite mit diesem Namen!"
+msgstr "¡Una página de destino con el nombre dado ya existe!"
 
 #. Text in echo
 msgid "Click here to overwrite the existing landing page"
-msgstr "Klicken Sie hier zum Überschreiben der bestehenden Zielseite"
+msgstr "Haga clic aquí para sobrescribir la página de destino existente"
 
 #. Text in echo
 #: chimpexpress/import.php:98
 msgid "select campaign content to import"
-msgstr "Zu importierende Kampagne"
+msgstr "seleccionar el contenido de la campaña para importar"
 
 #. Text in echo
 #: chimpexpress/compose.php:374
 msgid "subject line"
-msgstr "Betreffzeile"
+msgstr "línea de asunto"
 
 #. Text in echo
 #: chimpexpress/compose.php:209
 msgid "submit"
-msgstr "absenden"
+msgstr "enviar"
 
 #. Text in echo
 #: chimpexpress/compose.php:367
 msgid "this list has"
-msgstr "Diese Liste hat"
+msgstr "esta lista tiene"
 
 #. Text in echo
 #: chimpexpress/compose.php:350
 msgid "this template has"
-msgstr "Dieses Template hat"
+msgstr "esta plantilla tiene"
 
 #. Text in echo
 msgid "Landing Page Archive"
-msgstr "Zielseitenarchiv"
+msgstr "Archivo de Página de Destino"
 
 #. Text in echo
 msgid "Landing Pages"
-msgstr "Zielseiten"
+msgstr "Páginas de Destino"
 
 #. Text in echo
 msgid "Campaign Subject"
-msgstr "Betreffzeile der Kampagne"
+msgstr "Asunto de la Campaña"
 
 #. Text in echo
 msgid "created / modified"
-msgstr "erstellt / bearbeitet"
+msgstr "creado/modificado"
 
 #. Text in function
 #: chimpexpress/footer.php:23
 msgid "developed by"
-msgstr "entwickelt von"
+msgstr "desarrollado por"
 
 #. Text in echo
 msgid "page title"
-msgstr "Seitentitel"
+msgstr "título de la página"
 
 #. Text in echo
 msgid "import as ..."
-msgstr "importieren als ..."
+msgstr "importar como..."
 
 #. Text in echo
 msgid "Google Analytics Profile ID"
-msgstr "Google Analytics Profil ID"
+msgstr "ID del Perfil de Google Analytics"
 
 #. Text in echo
 msgid ""
 "Enter your Google Analytics Profile ID if you want to be able to track your "
 "landing pages in Analytics. The ID should look like: UA-1234567-8"
 msgstr ""
-"Geben Sie hier Ihre Google Analytics Profil ID ein, wenn Sie Statistiken auf "
-"ihren Zielseiten sammeln möchten. Diese ID sollte folgendes Format "
-"aufweisen: UA-1234567-8"
+"Escriba su ID del perfil de Google Analytics si quiere ser capaz de realizar "
+"un seguimiento de las páginas de destino en Google Analytics. El ID debe ser "
+"similar a: UA-1234567-8"
 
 #. Text in echo
 msgid "Your email shouldn't be much more than 600 pixels wide."
-msgstr "Ihre Email sollte nicht breiter als 600 Pixel sein."
+msgstr "Su email no debería ser mayor de 600 píxeles de ancho."
 
 #. Text in echo
 msgid ""
@@ -571,69 +571,68 @@ msgid ""
 "\"Reload cache\">Reload cache</a> if an expected entry does not appear in "
 "the list."
 msgstr ""
-"Templates und Listen wurden gecached. <a href=\"javascript:void(0);\" title="
-"\"Cache neu laden\">Cache neu laden</a>, falls erwartete Einträge nicht "
-"angezeigt werden."
+"Las plantillas y listas se almacenan en caché. <a href=\"javascript:void(0);"
+"\" title=\"Reload cache\">Recargue la caché</a> si una entrada esperada no "
+"aparece en la lista."
 
 #. Text in echo
 msgid "Note"
-msgstr "Hinweis"
+msgstr "Nota"
 
 #. Text in echo
 msgid "Retrieving templates and lists ..."
-msgstr "Templates und Listen werden abgerufen ..."
+msgstr "Recuperando plantillas y listas..."
 
 #. Text in echo
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr "Modificar"
 
 #. Text in echo
 msgid "Save"
-msgstr "Speichern"
+msgstr "Guardar"
 
 #. Text in echo
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr "Cancelar"
 
 #. Text in echo
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Eliminar"
 
 #. Text in echo
 msgid "Please select a landing page from the list!"
-msgstr "Bitte wählen Sie eine Zielseite aus der Liste!"
+msgstr "¡Por favor, seleccione una página de destino de la lista!"
 
 #. Text in echo
 msgid "Please select one or more landing pages from the list!"
-msgstr "Bitte wählen Sie eine oder mehrere Zielseiten aus der Liste!"
+msgstr "¡Por favor, seleccione una o más páginas de destino de la lista!"
 
 #. Text in echo
 msgid ""
 "Are you sure you want to delete the selected landing pages? There is no undo!"
 msgstr ""
-"Sind Sie sicher, dass Sie die gewählten Zielseiten löschen möchten? Dieser "
-"Vorgang kann nicht rückgängig gemacht werden!"
+"¿Seguro que desea eliminar las páginas de destino seleccionados? ¡Está "
+"acción no se puede deshacer!"
 
 #. Text in echo
 msgid ""
 "Landing page not found! Please make sure the directory \"archive\" exists in "
 "your wordpress root and is writable."
 msgstr ""
-"Zielseite wurde nicht gefunden! Bitte stellen Sie sicher, dass das "
-"Verzeichnis \"archive\" in Ihrem Wordpress Hauptverzeichnis existiert und "
-"beschreibbar ist."
+"¡Página de destino no encontrada! Por favor, asegúrese de que existe el "
+"directorio \"archive\" en la raíz de su wordpress y se puede escribir."
 
 #. Text in echo
 msgid "Edit Landing Page"
-msgstr "Zielseite bearbeiten"
+msgstr "Modificar la Página de Destino"
 
 #. Text in echo
 msgid "No landing page selected!"
-msgstr "Keine Zielseite ausgewählt!"
+msgstr "¡No hay página de destino seleccionada!"
 
 #. Text in echo
 msgid "Are you sure you want to cancel this operation?"
-msgstr "Sind Sie sicher, dass Sie diese Operation abbrechen möchten?"
+msgstr "¿Está seguro que desea cancelar esta operación?"
 
 #. Text in echo
 msgid ""
@@ -641,34 +640,34 @@ msgid ""
 "templates and lists in MailChimp. <span id=\"reloadCache\"><a href="
 "\"javascript:void(0)\">Click here to re-try.</a>"
 msgstr ""
-"Templates und Listen konnten nicht geladen werden. Bitte stellen Sie sicher, "
-"dass Templates und Listen in MailChimp vorhanden sind. <span id=\"reloadCache"
-"\"><a href=\"javascript:void(0)\">Klicken Sie hier, um die Informationen neu "
-"zu laden.</a>"
+"¡Las plantillas y listas no pudieron ser recuperadas! Por favor, asegúrese "
+"de que haya configurado las plantillas y listas de MailChimp. <span id="
+"\"reloadCache\"><a href=\"javascript:void(0)\">Haga click aquí para "
+"reintentar.</a>"
 
 #. Text in echo
 msgid "FTP Host"
-msgstr "FTP Host"
+msgstr "Host de FTP"
 
 #. Text in echo
 msgid "FTP Username"
-msgstr "FTP Benutzername"
+msgstr "Nombre de Usuario de FTP"
 
 #. Text in echo
 msgid "FTP Password"
-msgstr "FTP Passwort"
+msgstr "Contraseña de FTP"
 
 #. Text in echo
 msgid "FTP Path"
-msgstr "FTP Pfad"
+msgstr "Camino de FTP"
 
 #. Text in echo
 msgid "Find FTP Path"
-msgstr "FTP Pfad ermitteln"
+msgstr "Encontrar camino de FTP"
 
 #. Text in echo
 msgid "Invalid ftp credentials!"
-msgstr "Ungültige FTP Zugangsdaten!"
+msgstr "¡Credenciales de ftp inválidas!"
 
 #. Text in echo
 msgid ""
@@ -676,87 +675,86 @@ msgid ""
 "To find it you can login with your ftp client and navigate to the WordPress "
 "directory. This would be your ftp path."
 msgstr ""
-"Geben Sie den Pfad von Ihrem FTP Hauptverzeichnis zum WordPress Verzeichnis "
-"ein. Um diesen Pfad herauszufinden, können Sie sich mit Ihrem FTP Programm "
-"anmelden und in Ihr WordPress Verzeichnis navigieren. Dies ist der "
-"einzugebende FTP Pfad."
+"Introduzca la ruta del directorio raíz de ftp a tu instalación de WordPress. "
+"Para encontrarlo, puede iniciar sesión con su cliente ftp y navegar hasta el "
+"directorio de WordPress. Este sería el camino de ftp."
 
 #. Text in echo
 msgid ""
 "If ChimpExpress can't write files directly to the server it will prompt you "
 "to enter your ftp credentials."
 msgstr ""
-"Falls ChimpExpress nicht direkt Dateien auf den Server übertragen kann, "
-"werden Sie aufgefordert hier Ihre FTP Zugangsdaten einzugeben."
+"Si ChimpExpress no puede escribir archivos directamente en el servidor se le "
+"pedirá que introduzca sus credenciales de ftp."
 
 #. Text in echo
 msgid "Test FTP Connection"
-msgstr "FTP Verbindung testen"
+msgstr "Prueba de Conexión de FTP"
 
 #. Text in echo
 msgid "run test"
-msgstr "Test ausführen"
+msgstr "ejecutar prueba"
 
 #. Text in echo
 msgid "Invalid FTP host!"
-msgstr "Ungültiger FTP Host!"
+msgstr "¡Host de FTP inválido!"
 
 #. Text in echo
 msgid "Invalid username / password!"
-msgstr "Ungültiger Benutzername / Passwort!"
+msgstr "¡Nombre de usuario Inválido/contraseña!"
 
 #. Text in echo
 msgid "FTP test successful!"
-msgstr "FTP Test erfolgreich!"
+msgstr "¡Prueba de FTP exitosa!"
 
 #. Text in echo
 msgid ""
 "Direct file access not possible. Please enter valid ftp credentials in the "
 "configuration!"
 msgstr ""
-"Kein direkter Datezugriff möglich. Bitte geben Sie gültige FTP Zugangsdaten  "
-"in der Konfiguration ein!"
+"El acceso directo a archivos no es posible. ¡Por favor, introduzca "
+"credenciales de FTP válidas en la configuración!"
 
 #. Text in echo
 msgid "Grant Access for"
-msgstr "Zugriff gestatten für"
+msgstr "Otorgar acceso para"
 
 #. Text in echo
 msgid ""
 "Select the role, which is supposed to have access to the plugin. All roles "
 "above the selected will have access as well."
 msgstr ""
-"Wählen Sie die Benutzergruppe, die Zugriff auf das Plugin haben soll. Alle "
-"Gruppen oberhalb der gewählten werden ebenfalls Zugriff erhalten."
+"Seleccione el rol, que se supone que tiene acceso al plugin. Todos los roles "
+"seleccionados  tendrán acceso también ."
 
 #. Text in echo
 msgid "Administrators"
-msgstr "Administratoren"
+msgstr "Administradores"
 
 #. Text in echo
 msgid "Editors"
-msgstr "Redakteure"
+msgstr "Editores"
 
 #. Text in echo
 msgid "Authors"
-msgstr "Autoren"
+msgstr "Autores"
 
 #. Text in echo
 msgid "Import from MailChimp campaign"
-msgstr "Importieren aus MailChimp Kampagne"
+msgstr "Importar de campaña MailChimp"
 
 #. Text in echo
 msgid "Choose a campaign to copy content into your post"
-msgstr "Wählen Sie eine Kampagne, um Inhalte in Ihren Artikel zu kopieren"
+msgstr "Elija una campaña para copiar el contenido en su mensaje"
 
 #. Text in echo
 msgid "open campaign in popup window"
-msgstr "Öffne Kampagne in Popup Fenster"
+msgstr "abrir campaña en una ventana emergente"
 
 #. Text in echo
 msgid "load more campaigns"
-msgstr "Lade weitere Kampagnen"
+msgstr "cargar más campañas"
 
 #. Text in echo
 msgid "more"
-msgstr "mehr"
+msgstr "más"
