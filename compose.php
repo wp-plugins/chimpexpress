@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014 freakedout (www.freakedout.de)
+ * Copyright (C) 2015  freakedout (www.freakedout.de)
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
@@ -312,8 +312,8 @@ $MCAPI = new chimpexpressMCAPI;
                 return;
             });
             jQuery("#next").unbind('click');
-            jQuery("#next").click(function() {
-                gotoStep( <?php echo $step;?>, <?php echo $step + 1;?> );
+            jQuery("#next").click( function(){
+            gotoStep( <?php echo $step;?>, <?php echo $step + 1;?> );
             return;
             });
         } else {
@@ -446,26 +446,26 @@ $MCAPI = new chimpexpressMCAPI;
             $MCAPI = new chimpexpressMCAPI;
             $cacheDir = 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache';
 
-            if ($wp_filesystem->method == 'direct') {
-                $useFTP = false;
-                $handler = $wp_filesystem;
+            if( $wp_filesystem->method == 'direct' ){
+            $useFTP = false;
+            $handler = $wp_filesystem;
 
-                if(!is_dir(ABSPATH . $cacheDir)) {
-                    $wp_filesystem->mkdir( ABSPATH . $cacheDir);
-                }
-
-            } else {
-                $useFTP = true;
-                $chimpexpress = new chimpexpress;
-                $handler = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
-                $login = @ftp_login($handler, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
-                @ftp_chdir($handler, $chimpexpress->_settings['ftpPath'] );
-                if( ! is_dir( ABSPATH . $cacheDir ) ){
-                    @ftp_mkdir($handler, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
-                }
+            if( ! is_dir( ABSPATH . $cacheDir ) ){
+                $wp_filesystem->mkdir( ABSPATH . $cacheDir);
             }
 
-            $cache = new chimpexpressJG_Cache($cacheDir, $useFTP, $handler);
+            } else {
+            $useFTP = true;
+            $chimpexpress = new chimpexpress;
+            $handler = @ftp_connect( $chimpexpress->_settings['ftpHost'] );
+            $login = @ftp_login($handler, $chimpexpress->_settings['ftpUser'], $chimpexpress->_settings['ftpPasswd']);
+            @ftp_chdir($handler, $chimpexpress->_settings['ftpPath'] );
+            if( ! is_dir( ABSPATH . $cacheDir ) ){
+                @ftp_mkdir($handler, 'wp-content' .DS. 'plugins' .DS. 'chimpexpress' .DS. 'cache');
+            }
+            }
+
+            $cache = new chimpexpressJG_Cache( $cacheDir, $useFTP, $handler );
 
             $templates = $cache->get('templates');
 

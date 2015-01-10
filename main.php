@@ -1,18 +1,18 @@
 <?php
 /**
- * Copyright (C) 2014 freakedout (www.freakedout.de)
+ * Copyright (C) 2015  freakedout (www.freakedout.de)
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as 
+ * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/> 
- * or write to the Free Software Foundation, Inc., 51 Franklin St, 
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * or write to the Free Software Foundation, Inc., 51 Franklin St,
  * Fifth Floor, Boston, MA  02110-1301  USA
 **/
 
@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) or die( 'Restricted Access' );
 jQuery(document).ready(function($) {
 	jQuery("#gotoArchive").click( function(){
 		window.location = 'admin.php?page=ChimpExpressArchive';
-		
+
 	});
 });
 </script>
@@ -54,8 +54,8 @@ jQuery(document).ready(function($) {
 	if (   $wp_filesystem->method != 'direct'
 		&& (
 		!$chimpexpress->_settings['ftpHost']
-		|| !$chimpexpress->_settings['ftpUser'] 
-		|| !$chimpexpress->_settings['ftpPasswd'] 
+		|| !$chimpexpress->_settings['ftpUser']
+		|| !$chimpexpress->_settings['ftpPasswd']
 		|| !$ftpstream
 		|| !$login
 		|| !$ftproot
@@ -68,12 +68,12 @@ jQuery(document).ready(function($) {
 	<?php }
 	@ftp_close($ftpstream);
 	}
-	?> 
+	?>
 	<div style="display:block;height:3em;"></div>
-	
+
 	<p><?php _e('Pull content from MailChimp email campaigns into Wordpress or compose an email campaign in Wordpress, then pass it to MailChimp.', 'chimpexpress');?></p>
 	<p><a href="http://www.chimpexpress.com" target="_blank">ChimpExpress.com</a></p>
-	
+
 	<table width="750" id="dashboardTable">
 		<tr>
 			<td width="425">
@@ -99,10 +99,10 @@ jQuery(document).ready(function($) {
 
 		</tr>
 	</table>
-	
+
 	<br />
 	<br />
 	<a id="gotoArchive" class="button" href="javascript:void(0);" style="float:none;" title="<?php _e('Landing Page Archive', 'chimpexpress');?>"><?php _e('Landing Page Archive', 'chimpexpress');?></a>
-	
+
 	<?php include( WP_PLUGIN_DIR . DS . 'chimpexpress' . DS . 'footer.php' ); ?>
 </div>

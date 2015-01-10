@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014 freakedout (www.freakedout.de)
+ * Copyright (C) 2015  freakedout (www.freakedout.de)
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
@@ -85,10 +85,10 @@ jQuery(document).ready(function($) {
 		window.location = 'admin.php?page=ChimpExpressArchive';
 	});
 	*/ ?>
-	jQuery("#next").click(function(force) {
+	jQuery("#next").click( function( force ){
         console.log('123');
 
-		if (jQuery.trim( jQuery('#fileName').val() ) == '') {
+		if( jQuery.trim( jQuery('#fileName').val() ) == '' ){
 		    alert( '<?php _e('Cannot continue as campaign does not seem to have a subject yet!', 'chimpexpress');?>');
 		    return;
 		}
@@ -108,14 +108,14 @@ jQuery(document).ready(function($) {
 			}
 			var data = {
                 action: "import",
-				type: type,
-				datatype: datatype,
-				cid : jQuery('#cid').val(),
-				title: campaigns[jQuery('#cid').val()]['title'],
-				subject: campaigns[jQuery('#cid').val()]['subject'],
-				fileName: htmlentities(jQuery('#fileName').val()),
-				force: jQuery('#force').val()
-		   };
+				    type: type,
+				    datatype: datatype,
+				    cid : jQuery('#cid').val(),
+				    title: campaigns[jQuery('#cid').val()]['title'],
+				    subject: campaigns[jQuery('#cid').val()]['subject'],
+				    fileName: htmlentities( jQuery('#fileName').val() ),
+				    force: jQuery('#force').val()
+				   };
 
 			jQuery.post(ajaxurl, data, function(response) {
 			    if( response.error == 1 ){
