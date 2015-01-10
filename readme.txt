@@ -78,5 +78,5 @@ Installing ChimpExpress is very easy. User the WordPress plugin installer to upl
 = 1.6.2 =
 * Fixed layout bug that interferred with Wordpress navigation.
 * Fixed bug when creating landing pages and file already existed.
-= 1.6.3 *
+= 1.6.3 =
 * innerxhtml.js library contained a wrong license declaration.
