@@ -829,7 +829,7 @@ class chimpexpress
 			    </label>
 			</th>
 			<td>
-			    <input type="text" name="<?php echo $this->_optionsName; ?>[apikey]" style="text-align:center;width:270px;" maxlength="36" value="<?php echo esc_attr($this->_settings['apikey']); ?>" id="<?php echo $this->_optionsName; ?>_apikey" class="regular-text code" />
+			    <input type="text" name="<?php echo $this->_optionsName; ?>[apikey]" style="text-align:center;width:270px;" maxlength="40" value="<?php echo esc_attr($this->_settings['apikey']); ?>" id="<?php echo $this->_optionsName; ?>_apikey" class="regular-text code" />
 			    <?php /* if ( empty($this->_settings['apikey']) ) {
 			    ?>
 			    <input type="submit" name="get-apikey" value="<?php _e('Get API Key', 'chimpexpress'); ?>" />
